@@ -16,19 +16,26 @@
 
 <body>
 	<main>
-		<h1>
+	<!--	<h1>
 			Alexandre
 			<br>
 			Ludwig N. Vasconcelos
       	<br>
        	Final Project
       </h1>
-		<h2>Elevator</h2>
-		<button onclick="addPerson()">add person</button> |
-		<button onclick="test()">test</button> |
-		<br>
+		<h2>Elevator</h2> -->
+		
+        
+       <!-- <form> -->
+		<button onclick="addRandomPerson()">add person to random floors</button> |<br>
+		<input type="button" onclick="addPerson()" value="add person"> |
+		Current Floor: <input type="number" name="currentFloor"id="currentFloor" min="0" max="9">
+		Destination Floor: <input type="number" id="floorOut" min="0" max="9">
+		
+		<!--</form>-->
 		<br>
 		<canvas id="canvas" width="1000" height="600"></canvas>
+		
 	</main>
 </body>
 
