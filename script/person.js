@@ -1,12 +1,12 @@
 /*jshint esversion: 6 */
 /*globals direction */
-function person(name, currentFloor, floorOut) {
+function person(name, currentFloor, destinationFloor) {
     this.name = name;
     this.currentFloor = currentFloor;
-    this.floorOut = floorOut;
+    this.destinationFloor = destinationFloor;
     this.waiting = true;
     this.direction = function() {
-        if (this.currentFloor > this.floorOut) {
+        if (this.currentFloor > this.destinationFloor) {
             return direction.DOWN;
         } else {
             return direction.UP;

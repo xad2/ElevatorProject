@@ -27,15 +27,15 @@ function drawBuilding() {
 
 function addPerson() {
     let currentFloor = document.getElementById("currentFloor").value;
-    let personFloorOut = document.getElementById("floorOut").value;
+    let destinationFloor = document.getElementById("floorOut").value;
 
-    if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(personFloorOut) && personFloorOut !== "") {
+    if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(destinationFloor) && destinationFloor !== "") {
 
         currentFloor = Number(currentFloor);
-        personFloorOut = Number(personFloorOut);
+        destinationFloor = Number(destinationFloor);
 
-        if (isFloorValid(currentFloor) && isFloorValid(personFloorOut)) {
-            let newPerson = new person("a", currentFloor, personFloorOut);
+        if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
+            let newPerson = new person("a", currentFloor, destinationFloor);
             floors[currentFloor].addPerson(newPerson);
             callElevator(floors[currentFloor]);
         }
@@ -46,13 +46,13 @@ function addPerson() {
 
 function addRandomPerson() {
     let currentFloor = 0;
-    let personFloorOut = 0;
-    while (currentFloor === personFloorOut) {
+    let destinationFloor = 0;
+    while (currentFloor === destinationFloor) {
         currentFloor = randomValue(9);
-        personFloorOut = randomValue(9);
+        destinationFloor = randomValue(9);
     }
 
-    let newPerson = new person("a", currentFloor, personFloorOut);
+    let newPerson = new person("a", currentFloor, destinationFloor);
     floors[currentFloor].addPerson(newPerson);
     callElevator(floors[currentFloor]);
 }

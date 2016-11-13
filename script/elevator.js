@@ -36,7 +36,8 @@ function Elevator() {
         if (!floorCalled) arrFloorsCalled.push(floor);
     };
     this.elevatorIsWorking = function() {
-        return (this.upperFloorsCalled.length > 0) || (this.lowerFloorsCalled.length > 0) || (this.people.length > 0);
+        return (this.upperFloorsCalled.length > 0) || (this.lowerFloorsCalled.length > 0) || 
+        (this.people.length > 0);
     };
     this.addCalled = function(floor) {
 
@@ -75,13 +76,14 @@ function Elevator() {
 
 
             //*************************************************CHECAR A PRIMEIRA PESSOA
-            //if (peopleOnThisFloor[i].waiting && peopleOnThisFloor[i].direction() === this.direction) {
+            //if (peopleOnThisFloor[i].waiting && (peopleOnThisFloor[i].direction() === this.direction
+             //   || !this.elevatorIsWorking())) {
             if (peopleOnThisFloor[i].waiting) {
                 peopleOnThisFloor[i].waiting = false;
                 //adicionar a pessoa no elevador.
                 this.people.push(peopleOnThisFloor[i]);
-                if (peopleOnThisFloor[i].direction() === direction.UP) this.addFloorsCalled(floors[peopleOnThisFloor[i].floorOut], this.upperFloorsCalled);
-                else this.addFloorsCalled(floors[peopleOnThisFloor[i].floorOut], this.lowerFloorsCalled);
+                if (peopleOnThisFloor[i].direction() === direction.UP) this.addFloorsCalled(floors[peopleOnThisFloor[i].destinationFloor], this.upperFloorsCalled);
+                else this.addFloorsCalled(floors[peopleOnThisFloor[i].destinationFloor], this.lowerFloorsCalled);
                 //retirar a pessoa do andar	removePerson?
                 floors[this.currentFloor].removePerson(i);
                 //peopleOnThisFloor.splice(i, 1);
@@ -93,7 +95,7 @@ function Elevator() {
     this.removePeople = function() {
         for (let i = 0; i < this.people.length; i++) {
             let person = this.people[i];
-            if (person.floorOut === this.currentFloor) {
+            if (person.destinationFloor === this.currentFloor) {
                 //moving the person to the floor.
                 if (this.currentFloor > 0) {
                     floors[this.currentFloor].addPerson(person);
