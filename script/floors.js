@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*globals drawPerson */
+/*globals drawPersonInTheFloor */
 var floors = [];
 
 for (let i = 0; i < 10; i++)
@@ -12,11 +12,13 @@ function floor(number) {
 	this.called = false;
 	this.addPerson = function(person){
 		this.people.push(person);
-		drawPerson(this.number, this.people.length);
+		drawPersonInTheFloor(this);
+		//drawPerson(this.number, this.people.length);
 	};
 	this.removePerson = function(personIndex){
 		this.people.splice(personIndex,1);
-		drawPerson(this.number, this.people.length);
+		drawPersonInTheFloor(this);
+		//drawPerson(this.number, this.people.length);
 	};	
 	return this;
 }
