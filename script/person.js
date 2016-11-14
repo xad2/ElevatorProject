@@ -1,12 +1,12 @@
 /*jshint esversion: 6 */
 /*globals direction, Elevator, document */
-function person(name, currentFloor, floorOut) {
+function person(name, currentFloor, destinationFloor) {
 	this.name = name;
 	this.currentFloor = currentFloor;
-	this.floorOut = floorOut;
+	this.destinationFloor = destinationFloor;
 	this.waiting = true;
 	this.direction = function () {
-		if (this.currentFloor > this.floorOut) {
+		if (this.currentFloor > this.destinationFloor) {
 			return direction.DOWN;
 		} else {
 			return direction.UP;
@@ -27,7 +27,7 @@ function drawPersonInTheFloor(floorNumber, amountOfPeople) {
 function drawPersonInTheFloor(floor) {
 	ctx.clearRect(405, 530 - (floor.number * 55), 60, 15);
 	for (let i = 0; i < floor.people.length; i++)
-		ctx.fillText(floor.people[i].floorOut, 460 - (i * 8), 540 - (floor.number * 55));
+		ctx.fillText(floor.people[i].destinationFloor, 460 - (i * 8), 540 - (floor.number * 55));
 
 }
 
@@ -36,6 +36,6 @@ function drawPersonInTheElevator() {
 	ctx.fillStyle = "white";
 	ctx.font = "14px Georgia";
 	for (let i = 0; i < Elevator.people.length; i++)
-		ctx.fillText(Elevator.people[i].floorOut, 482 + (i * 9), 550 - (Elevator.currentFloor * 55));
+		ctx.fillText(Elevator.people[i].destinationFloor, 482 + (i * 9), 550 - (Elevator.currentFloor * 55));
 	ctx.restore();
 }

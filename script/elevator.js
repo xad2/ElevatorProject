@@ -14,20 +14,20 @@ function Elevator() {
 	this.capacity = 10;
 	this.direction = direction.NONE;
 	this.people = [];
-	this.floorsCalled = [];
+	this.calledFloors = [];
 
 	this.addCalled = function (floor) {
 		let floorCalled = false;
-		for (let i = 0; i < this.floorsCalled.length; i++) {
-			floorCalled = (this.floorsCalled[i].number === floor.number);
+		for (let i = 0; i < this.calledFloors.length; i++) {
+			floorCalled = (this.calledFloors[i].number === floor.number);
 			if (floorCalled)
 				break;
 		}
 		if (!floorCalled)
-			this.floorsCalled.push(floor);
+			this.calledFloors.push(floor);
 	};
 	this.wasCalled = function () {
-		return (this.floorsCalled.length > 0) || (this.people.length > 0);
+		return (this.calledFloors.length > 0) || (this.people.length > 0);
 	};
 	this.moveNextFloor = function () {
 		if (this.wasCalled()) {
@@ -52,23 +52,23 @@ function Elevator() {
 	this.checkDirection = function () {
 		let up = false;
 		let down = false;
-		for (let i = 0; i < this.floorsCalled.length; i++) {
-			if (this.floorsCalled[i].number > this.currentFloor)
+		for (let i = 0; i < this.calledFloors.length; i++) {
+			if (this.calledFloors[i].number > this.currentFloor)
 				up = true;
-			if (this.floorsCalled[i].number < this.currentFloor)
+			if (this.calledFloors[i].number < this.currentFloor)
 				down = true;
 		}
 		let peopleInThisFloor = floors[this.currentFloor].people;
 		for (let i = 0; i < peopleInThisFloor.length; i++) {
 			if (peopleInThisFloor[i].waiting) {
-				if (peopleInThisFloor[i].floorOut > this.currentFloor)
+				if (peopleInThisFloor[i].destinationFloor > this.currentFloor)
 					up = true;
-				if (peopleInThisFloor[i].floorOut < this.currentFloor)
+				if (peopleInThisFloor[i].destinationFloor < this.currentFloor)
 					down = true;
 			}
 		}
 
-		if (this.floorsCalled.length === 0)
+		if (this.calledFloors.length === 0)
 			this.direction = direction.NONE;
 		if (((this.direction === direction.UP) || (this.direction === direction.NONE)) && (up))
 			this.direction = direction.UP;
@@ -96,7 +96,7 @@ function Elevator() {
 
 				//adicionar a pessoa no elevador.
 				this.people.push(peopleOnThisFloor[i]);
-				this.addCalled(floors[peopleOnThisFloor[i].floorOut]);
+				this.addCalled(floors[peopleOnThisFloor[i].destinationFloor]);
 
 				//retirar a pessoa do andar	removePerson
 				floors[this.currentFloor].removePerson(i);
@@ -109,7 +109,7 @@ function Elevator() {
 	this.removePeople = function () {
 		for (let i = 0; i < this.people.length; i++) {
 			let person = this.people[i];
-			if (person.floorOut === this.currentFloor) {
+			if (person.destinationFloor === this.currentFloor) {
 				person.currentFloor = this.currentFloor;
 				//moving the person to the floor.
 				if (this.currentFloor > 0) {
@@ -130,9 +130,9 @@ function Elevator() {
 			}
 		}
 		if (!isAnyoneWaiting) {
-			for (let i = 0; i < this.floorsCalled.length; i++)
-				if (this.currentFloor === this.floorsCalled[i].number)
-					this.floorsCalled.splice(i, 1);
+			for (let i = 0; i < this.calledFloors.length; i++)
+				if (this.currentFloor === this.calledFloors[i].number)
+					this.calledFloors.splice(i, 1);
 		}
 
 	};
