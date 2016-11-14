@@ -102,7 +102,10 @@ function moveElevator() {
 		Elevator.reloadPeople();
 		Elevator.moveNextFloor();
 		setTimeout(moveElevator, 2000);
-	} else ElevatorIsMoving = false;
+	} else{ 
+	    ElevatorIsMoving = false;
+	   
+	}
 
 	drawElevator(Elevator.currentFloor, previousFloor);
 }

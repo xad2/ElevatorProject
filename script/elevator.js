@@ -15,6 +15,8 @@ function Elevator() {
 	this.direction = direction.NONE;
 	this.people = [];
 	this.calledFloors = [];
+	this.countMovement = 0;
+	this.totalMovement = 0;
 
 	this.addCalled = function (floor) {
 		let floorCalled = false;
@@ -33,21 +35,29 @@ function Elevator() {
 		if (this.wasCalled()) {
 			switch (this.direction) {
 				case direction.DOWN:
-					if (this.currentFloor > 0)
+					if (this.currentFloor > 0){
+					    this.countMovement++;
 						this.currentFloor--;
+					}
 					break;
 				case direction.UP:
-					if (this.currentFloor < floors.length)
+					if (this.currentFloor < floors.length){
+					    this.countMovement++;
 						this.currentFloor++;
+					}
 					break;
 				case direction.NONE:
+				    //this.countMovement = 0;
 					break;
 				default:
 					break;
 			}
-		} else
+		} else{
 			this.direction = direction.NONE;
-
+			Elevator.totalMovement += Elevator.countMovement;
+            console.log("Total floors moved: " + Elevator.totalMovement);
+            this.countMovement = 0;
+		}
 	};
 	this.checkDirection = function () {
 		let up = false;
@@ -111,6 +121,8 @@ function Elevator() {
 			let person = this.people[i];
 			if (person.destinationFloor === this.currentFloor) {
 				person.currentFloor = this.currentFloor;
+				console.log("The elevator has traveled " + this.countMovement + " floors");
+				console.log("and it took " + this.countMovement*2 + " secs to arrive at floor " +this.currentFloor );
 				//moving the person to the floor.
 				if (this.currentFloor > 0) {
 					floors[this.currentFloor].addPerson(person);
