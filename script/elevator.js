@@ -1,7 +1,9 @@
 /*jshint esversion: 6 */
-/*globals document, floors */
+/*globals document, floors, Statistics */
 /// <reference path="floors.js" />
 /// <reference path="person.js" />
+/// <reference path="stats.js" />
+
 
 var direction = {
 	UP: 1,
@@ -15,9 +17,10 @@ function Elevator() {
 	this.direction = direction.NONE;
 	this.people = [];
 	this.calledFloors = [];
-	this.countMovement = 0;
-	this.totalMovement = 0;
-
+	this.stats = new Statistics(this.currentFloor);
+    
+    
+    
 	this.addCalled = function (floor) {
 		let floorCalled = false;
 		for (let i = 0; i < this.calledFloors.length; i++) {
@@ -31,18 +34,33 @@ function Elevator() {
 	this.wasCalled = function () {
 		return (this.calledFloors.length > 0) || (this.people.length > 0);
 	};
+	
+	this.incrementMovementForEachPerson = function(){
+	    
+	    
+	    for(let i = 0; i < this.people.length; i++){
+	        let person = this.people[i];
+	        person.stats.incrementMovement();
+	    }
+	    
+	};
+	
+	
 	this.moveNextFloor = function () {
 		if (this.wasCalled()) {
 			switch (this.direction) {
 				case direction.DOWN:
 					if (this.currentFloor > 0){
-					    this.countMovement++;
+					    this.stats.incrementMovement();
+					    
+					    this.incrementMovementForEachPerson();
 						this.currentFloor--;
 					}
 					break;
 				case direction.UP:
 					if (this.currentFloor < floors.length){
-					    this.countMovement++;
+					    this.stats.incrementMovement();
+                        this.incrementMovementForEachPerson();
 						this.currentFloor++;
 					}
 					break;
@@ -54,9 +72,11 @@ function Elevator() {
 			}
 		} else{
 			this.direction = direction.NONE;
-			Elevator.totalMovement += Elevator.countMovement;
-            console.log("Total floors moved: " + Elevator.totalMovement);
-            this.countMovement = 0;
+			//elevator statistiscs
+			this.stats.incrementNumOfStops();
+			this.stats.setFinalPos(this.currentFloor);
+            this.stats.displayResults("Elevator");
+            
 		}
 	};
 	this.checkDirection = function () {
@@ -122,11 +142,16 @@ function Elevator() {
 			if (person.destinationFloor === this.currentFloor) {
 				person.currentFloor = this.currentFloor;
 				console.log("The elevator has traveled " + this.countMovement + " floors");
-				console.log("and it took " + this.countMovement*2 + " secs to arrive at floor " +this.currentFloor );
+				console.log("and it took " + this.countMovement*2 + " secs to arrive at floor " +this.currentFloor  );
 				//moving the person to the floor.
 				if (this.currentFloor > 0) {
 					floors[this.currentFloor].addPerson(person);
 				}
+				
+				//person statistics
+				person.stats.setFinalPos(this.currentFloor);
+				person.stats.displayResults(person.name);
+				
 				//removing person from the people array.
 				this.people.splice(i, 1);
 				i--;

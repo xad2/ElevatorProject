@@ -1,10 +1,13 @@
 /*jshint esversion: 6 */
-/*globals direction, Elevator, document */
+/*globals direction, Elevator, document, Statistics*/
+
+
 function person(name, currentFloor, destinationFloor) {
 	this.name = name;
 	this.currentFloor = currentFloor;
 	this.destinationFloor = destinationFloor;
 	this.waiting = true;
+	this.stats = new Statistics(this.currentFloor);
 	this.direction = function () {
 		if (this.currentFloor > this.destinationFloor) {
 			return direction.DOWN;

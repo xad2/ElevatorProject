@@ -1,9 +1,10 @@
 /*jshint esversion: 6 */
-/*globals document, Image, console, randomValue, floors, drawElevator, person, elevator, setTimeout, isFloorValid */
+/*globals document, Image, console, randomValue, floors, drawElevator, person, elevator, setTimeout, isFloorValid, Statistics */
 /// <reference path="elevator.js" />
 /// <reference path="floors.js" />
 /// <reference path="functions.js" />
 /// <reference path="person.js" />
+/// <reference path="stats.js" />
 
 
 
@@ -42,6 +43,7 @@ function addPerson() {
 
         if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
             let newPerson = new person("a", currentFloor, destinationFloor);
+            newPerson.stats = new Statistics(currentFloor);
             floors[currentFloor].addPerson(newPerson);
             callElevator(floors[currentFloor]);
         }
