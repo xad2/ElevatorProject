@@ -1,10 +1,12 @@
 /*jshint esversion: 6 */
-/*globals direction, Elevator, document */
+/*globals direction, Elevator, document, Statistics */
+
 function person(name, currentFloor, destinationFloor) {
 	this.name = name;
 	this.currentFloor = currentFloor;
 	this.destinationFloor = destinationFloor;
 	this.waiting = true;
+	this.stats = undefined;
 	this.direction = function () {
 		if (this.currentFloor > this.destinationFloor) {
 			return direction.DOWN;
@@ -12,6 +14,13 @@ function person(name, currentFloor, destinationFloor) {
 			return direction.UP;
 		}
 	};
+
+	this.initStatistics = function () {
+		this.stats = new Statistics();
+		this.stats.initStatistics(this.currentFloor, this.destinationFloor);
+	};
+
+
 }
 
 let canvas = document.getElementById("canvas");
@@ -25,7 +34,7 @@ function drawPersonInTheFloor(floorNumber, amountOfPeople) {
 
 
 function drawPersonInTheFloor(floor) {
-	ctx.clearRect(405, 530 - (floor.number * 55), 60, 15);
+	ctx.clearRect(402, 520 - (floor.number * 55), 76, 40);
 	for (let i = 0; i < floor.people.length; i++)
 		ctx.fillText(floor.people[i].destinationFloor, 460 - (i * 8), 540 - (floor.number * 55));
 
@@ -35,7 +44,17 @@ function drawPersonInTheElevator() {
 	ctx.save();
 	ctx.fillStyle = "white";
 	ctx.font = "14px Georgia";
-	for (let i = 0; i < Elevator.people.length; i++)
-		ctx.fillText(Elevator.people[i].destinationFloor, 482 + (i * 9), 550 - (Elevator.currentFloor * 55));
+
+	let height = 540;
+	let width = 0;
+	for (let i = 0; i < Elevator.people.length; i++) {
+		if (Math.floor(i / 5) > 0)
+			height = 560;
+		if (width >= 5)
+			width = 0;		
+		ctx.fillText(Elevator.people[i].destinationFloor, 482 + (width * 9), height - (Elevator.currentFloor * 55));
+		width++;
+
+	}
 	ctx.restore();
 }

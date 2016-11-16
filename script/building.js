@@ -1,13 +1,13 @@
 /*jshint esversion: 6 */
-/*globals document, Image, console, randomValue, floors, drawElevator, person, elevator, setTimeout, isFloorValid */
+/*globals document, Image, console, randomValue, floors, drawElevator, person, elevator, setTimeout, isFloorValid, Statistics */
 /// <reference path="elevator.js" />
 /// <reference path="floors.js" />
 /// <reference path="functions.js" />
 /// <reference path="person.js" />
 
 
-
-var Elevator = new Elevator();
+let timer = 1000;
+var Elevator = new Elevator(10);
 var BuildImage = new Image();
 BuildImage.src = "images/Building.jpg";
 
@@ -32,20 +32,21 @@ function drawBuilding() {
 
 
 function addPerson() {
-    let currentFloor = document.getElementById("currentFloor").value;
-    let destinationFloor = document.getElementById("floorOut").value;
+	let currentFloor = document.getElementById("currentFloor").value;
+	let destinationFloor = document.getElementById("floorOut").value;
 
-    if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(destinationFloor) && destinationFloor !== "") {
+	if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(destinationFloor) && destinationFloor !== "") {
 
-        currentFloor = Number(currentFloor);
-        destinationFloor = Number(destinationFloor);
+		currentFloor = Number(currentFloor);
+		destinationFloor = Number(destinationFloor);
 
-        if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
-            let newPerson = new person("a", currentFloor, destinationFloor);
-            floors[currentFloor].addPerson(newPerson);
-            callElevator(floors[currentFloor]);
-        }
-    }
+		if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
+			let newPerson = new person("a", currentFloor, destinationFloor);
+			newPerson.stats = new Statistics(currentFloor);
+			floors[currentFloor].addPerson(newPerson);
+			callElevator(floors[currentFloor]);
+		}
+	}
 
 }
 
@@ -61,7 +62,7 @@ function removePerson() {
 		if (isFloorValid(currentFloor) && isFloorValid(personFloorOut)) {
 
 			if (floors[currentFloor].people.length > 0) {
-				floors[currentFloor].people[0].floorOut = personFloorOut;
+				floors[currentFloor].people[0].destinationFloor = personFloorOut;
 				floors[currentFloor].people[0].waiting = true;
 				callElevator(floors[currentFloor]);
 			}
@@ -70,22 +71,24 @@ function removePerson() {
 }
 
 function addRandomPerson() {
-    let currentFloor = 0;
-    let destinationFloor = 0;
-    while (currentFloor === destinationFloor) {
-        currentFloor = randomValue(9);
-        destinationFloor = randomValue(9);
-    }
+	let currentFloor = 0;
+	let destinationFloor = 0;
+	while (currentFloor === destinationFloor) {
+		currentFloor = randomValue(9);
+		destinationFloor = randomValue(9);
+	}
 
-    let newPerson = new person("a", currentFloor, destinationFloor);
-    floors[currentFloor].addPerson(newPerson);
-    callElevator(floors[currentFloor]);
+	let newPerson = new person("a", currentFloor, destinationFloor);
+	floors[currentFloor].addPerson(newPerson);
+	callElevator(floors[currentFloor]);
 }
 
 function callElevator(floor) {
 	Elevator.addCalled(floor);
-	if (!ElevatorIsMoving)
+	if (!ElevatorIsMoving) {
+		Elevator.initStatistics();		
 		moveElevator();
+	}
 }
 
 let previousFloor;
@@ -96,13 +99,18 @@ function moveElevator() {
 	//drawBuilding();
 	drawElevator(Elevator.currentFloor, previousFloor);
 	/*create a new function */
+
 	if (Elevator.wasCalled()) {
 		ElevatorIsMoving = true;
 		previousFloor = Elevator.currentFloor;
 		Elevator.reloadPeople();
 		Elevator.moveNextFloor();
-		setTimeout(moveElevator, 2000);
-	} else ElevatorIsMoving = false;
+		setTimeout(moveElevator, timer);
+	} else {
+		ElevatorIsMoving = false;
+		Elevator.stats.finalPos = Elevator.currentFloor;
+		Elevator.stats.displayResults("Elevator");
+	}
 
 	drawElevator(Elevator.currentFloor, previousFloor);
 }
@@ -120,14 +128,12 @@ function test() {
 	newPerson = new person("a", 4, 5);
 	floors[4].addPerson(newPerson);
 	callElevator(floors[4]);
-	
-		newPerson = new person("a", 3, 5);
+
+	newPerson = new person("a", 3, 5);
 	floors[3].addPerson(newPerson);
 	callElevator(floors[3]);
-	
-		newPerson = new person("a", 4, 5);
+
+	newPerson = new person("a", 4, 5);
 	floors[4].addPerson(newPerson);
 	callElevator(floors[4]);
-
-
 }

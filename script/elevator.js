@@ -1,5 +1,6 @@
+
 /*jshint esversion: 6 */
-/*globals document, floors */
+/*globals document, floors, drawPersonInTheElevator, Statistics, console */
 /// <reference path="floors.js" />
 /// <reference path="person.js" />
 
@@ -9,12 +10,19 @@ var direction = {
 	NONE: 0
 };
 
-function Elevator() {
+function Elevator(capacity) {
 	this.currentFloor = 0;
-	this.capacity = 10;
+	this.capacity = capacity;
 	this.direction = direction.NONE;
 	this.people = [];
 	this.calledFloors = [];
+	this.stats = undefined;
+
+	this.initStatistics = function () {
+		this.stats = new Statistics();
+		this.stats.initStatistics(this.currentFloor, 0);
+	};
+
 
 	this.addCalled = function (floor) {
 		let floorCalled = false;
@@ -29,6 +37,7 @@ function Elevator() {
 	this.wasCalled = function () {
 		return (this.calledFloors.length > 0) || (this.people.length > 0);
 	};
+
 	this.moveNextFloor = function () {
 		if (this.wasCalled()) {
 			switch (this.direction) {
@@ -45,9 +54,9 @@ function Elevator() {
 				default:
 					break;
 			}
-		} else
+			this.stats.incrementMovement();
+		} else 
 			this.direction = direction.NONE;
-
 	};
 	this.checkDirection = function () {
 		let up = false;
@@ -76,15 +85,19 @@ function Elevator() {
 			this.direction = direction.DOWN;
 		else
 			this.direction = direction.NONE;
+
 	};
 
 	this.reloadPeople = function () {
-		this.removePeople();
-		this.getPeople();
+		let peopleLeft = this.removePeople();
+		let peopleEntered = this.getPeople();
 		this.checkDirection();
-
+		//this.stats.incrementMovement();
+		if (peopleEntered || peopleLeft)
+			this.stats.incrementNumOfStops();
 	};
 	this.getPeople = function () {
+		let peopleEntered = false;
 		this.checkDirection();
 		let peopleOnThisFloor = floors[this.currentFloor].people;
 		for (let i = 0; i < peopleOnThisFloor.length; i++) {
@@ -97,18 +110,23 @@ function Elevator() {
 				//adicionar a pessoa no elevador.
 				this.people.push(peopleOnThisFloor[i]);
 				this.addCalled(floors[peopleOnThisFloor[i].destinationFloor]);
+				peopleOnThisFloor[i].initStatistics();
 
 				//retirar a pessoa do andar	removePerson
 				floors[this.currentFloor].removePerson(i);
 				i--;
+				peopleEntered = true;
 			}
 		}
 		this.removeCalledFloors();
+		return peopleEntered;
 
 	};
 	this.removePeople = function () {
+		let peopleLeft = false;
 		for (let i = 0; i < this.people.length; i++) {
 			let person = this.people[i];
+			person.stats.incrementMovement();
 			if (person.destinationFloor === this.currentFloor) {
 				person.currentFloor = this.currentFloor;
 				//moving the person to the floor.
@@ -118,8 +136,14 @@ function Elevator() {
 				//removing person from the people array.
 				this.people.splice(i, 1);
 				i--;
+				person.stats.incrementNumOfStops();
+				person.stats.displayResults(person.name);
+				peopleLeft = true;
 			}
+
 		}
+		return peopleLeft;
+
 	};
 	this.removeCalledFloors = function () {
 		let isAnyoneWaiting = false;
