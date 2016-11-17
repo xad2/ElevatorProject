@@ -25,9 +25,8 @@ function Statistics() {
 		return (stopTime * this.numberOfStops) + (this.totalMovement * intervalTime);
 	};
 
-	this.displayResults = function (name) {
+	this.displayResults = function () {
 		console.log("||||||||||||||||||||||||||||||||");
-		console.log("Showing statistics for " + name);
 		console.log("Original position: " + this.originalPos);
 		console.log("Final position: " + this.finalPos);
 		console.log("Number of stops: " + this.numberOfStops);

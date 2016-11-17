@@ -137,7 +137,7 @@ function Elevator(capacity) {
 				this.people.splice(i, 1);
 				i--;
 				person.stats.incrementNumOfStops();
-				person.stats.displayResults(person.name);
+				person.displayInfo();
 				peopleLeft = true;
 			}
 
