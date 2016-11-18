@@ -2,4 +2,25 @@ canvas{
 	border: 1px solid #000000;
 	background-image: url("../images/Landscape.jpg");
 	background-size: 100%;
+	float: right;
+}
+
+#info{
+	/*border: solid;*/
+	float: left;
+	width: 40%;
+	height: 600px;
+}
+
+#infoPerson{
+	/*border: solid;*/
+	float: left;
+	width: 49%;
+	height: 100%;
+}
+#infoElevator{
+	/*border: solid;*/
+	float: right;
+	width: 49%;
+	height: 100%;
 }

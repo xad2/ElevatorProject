@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
-/*globals direction, Elevator, document, Statistics */
+/*globals direction, Elevator, document, Statistics, console */
 
 
 function person(nameCommentary, currentFloor, destinationFloor) {
-	this.nameCommentary = nameCommentary;
+	this.info = nameCommentary;
 	this.currentFloor = currentFloor;
 	this.destinationFloor = destinationFloor;
 	this.waiting = true;
@@ -24,9 +24,11 @@ function person(nameCommentary, currentFloor, destinationFloor) {
 	// fazer metodo para display info (incluindo statistics.)
 	
 	this.displayInfo = function(){
-	    console.log("Name: " + this.nameCommentary.name);
-	    console.log("Commentary: " + this.nameCommentary.commentary);
-	    this.stats.displayResults();
+		let infoPerson = document.getElementById("infoPerson");
+		
+	    infoPerson.innerHTML = "Name: " + this.info.name + "<br>";
+	    infoPerson.innerHTML += "Commentary: " + this.info.commentary;
+	    this.stats.displayResults(infoPerson);
 	};
 
 
@@ -34,11 +36,6 @@ function person(nameCommentary, currentFloor, destinationFloor) {
 
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
-
-
- 
-
-
 
 
 function drawPersonInTheFloor(floorNumber, amountOfPeople) {
@@ -55,9 +52,7 @@ function drawPersonInTheFloor(floor) {
 
 }
 
-function drawPersonInTheElevator() {
-	ctx.save();
-	ctx.fillStyle = "white";
+hite";
 	ctx.font = "14px Georgia";
 
 	let height = 540;

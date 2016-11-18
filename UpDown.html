@@ -35,13 +35,17 @@
 		<input type="button" onclick="addPerson()" value="add person">
 		<input type="button" onclick="removePerson()" value="remove person"> | Current Floor:
 		<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"> Destination Floor:
-		<input type="number" id="floorOut" min="0" max="9">
-
+		<input type="number" id="floorOut" min="0" max="9"><br>
+		
 
 
 		<!--</form>-->
-		<br>
-		<canvas id="canvas" width="1000" height="600"></canvas>
+		
+		<div id="info">
+		<div id="infoPerson"> </div>
+		<div id="infoElevator"> </div>
+		</div>
+		<canvas id="canvas" width="600" height="600"></canvas>
 
 	</main>
 </body>

@@ -25,14 +25,16 @@ function Statistics() {
 		return (stopTime * this.numberOfStops) + (this.totalMovement * intervalTime);
 	};
 
-	this.displayResults = function () {
-		console.log("||||||||||||||||||||||||||||||||");
-		console.log("Original position: " + this.originalPos);
-		console.log("Final position: " + this.finalPos);
-		console.log("Number of stops: " + this.numberOfStops);
-		console.log("Number of moviments: " + this.totalMovement);
-		console.log("Total time passed: " + this.calculateTimePassed(5, timer/1000));
-		console.log("||||||||||||||||||||||||||||||||");
+	this.displayResults = function (info) {
+		info.innerHTML +=
+		"||||||||||||||||||||||||||||||||" + "<br>"+
+		"Original position: " + this.originalPos + "<br>"+
+		"Final position: " + this.finalPos + "<br>"+
+		"Number of stops: " + this.numberOfStops + "<br>"+
+		"Number of moviments: " + this.totalMovement + "<br>"+
+		"Total time passed: " + this.calculateTimePassed(5, timer/1000) + "<br>"+
+		"||||||||||||||||||||||||||||||||" + "<br>";
 	};
 	return this;
+}
 }

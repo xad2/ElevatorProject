@@ -66,7 +66,7 @@ let populateNamesCommentsArray = function() {
 
         do {
             randomNameIndex = randomValue(namesArray.length-1);
-        } while (parallelArray[randomNameIndex])
+        } while (parallelArray[randomNameIndex]);
         parallelArray[randomNameIndex] = true;
 
         randomCommentIndex = randomValue(commentsArray.length-1);

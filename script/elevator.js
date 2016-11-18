@@ -1,6 +1,5 @@
-
 /*jshint esversion: 6 */
-/*globals document, floors, drawPersonInTheElevator, Statistics, console */
+/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer */
 /// <reference path="floors.js" />
 /// <reference path="person.js" />
 
@@ -55,7 +54,7 @@ function Elevator(capacity) {
 					break;
 			}
 			this.stats.incrementMovement();
-		} else 
+		} else
 			this.direction = direction.NONE;
 	};
 	this.checkDirection = function () {
@@ -99,7 +98,7 @@ function Elevator(capacity) {
 	this.getPeople = function () {
 		let peopleEntered = false;
 		this.checkDirection();
-		let peopleOnThisFloor = floors[this.currentFloor].people;
+		let peopleOnThisFloor = Building.floors[this.currentFloor].people;
 		for (let i = 0; i < peopleOnThisFloor.length; i++) {
 			//check the capacity
 			if (this.people.length === this.capacity)
@@ -109,11 +108,11 @@ function Elevator(capacity) {
 
 				//adicionar a pessoa no elevador.
 				this.people.push(peopleOnThisFloor[i]);
-				this.addCalled(floors[peopleOnThisFloor[i].destinationFloor]);
+				this.addCalled(Building.floors[peopleOnThisFloor[i].destinationFloor]);
 				peopleOnThisFloor[i].initStatistics();
 
 				//retirar a pessoa do andar	removePerson
-				floors[this.currentFloor].removePerson(i);
+				Building.floors[this.currentFloor].removePerson(i);
 				i--;
 				peopleEntered = true;
 			}
@@ -131,7 +130,7 @@ function Elevator(capacity) {
 				person.currentFloor = this.currentFloor;
 				//moving the person to the floor.
 				if (this.currentFloor > 0) {
-					floors[this.currentFloor].addPerson(person);
+					Building.floors[this.currentFloor].addPerson(person);
 				}
 				//removing person from the people array.
 				this.people.splice(i, 1);
@@ -161,17 +160,62 @@ function Elevator(capacity) {
 
 	};
 
-	return this;
-}
 
-function drawElevator(floor, previusFloor = 0) {
-	let canvas = document.getElementById("canvas");
-	let ctx = canvas.getContext("2d");
-	ctx.save();
-	ctx.beginPath();
-	ctx.clearRect(481, 518 - (previusFloor * 55), 48, 50);
-	ctx.fillStyle = "blue";
-	ctx.fillRect(481, 518 - (floor * 55), 48, 50);
-	drawPersonInTheElevator();
-	ctx.restore();
+	let previousFloor;
+	this.isMoving = false;
+	this.move = function () {
+		console.log(this.currentFloor + " Elevator: " + this.people.length);
+		this.draw(previousFloor);
+		/*create a new function */
+		if (this.wasCalled()) {
+			this.isMoving = true;
+			previousFloor = this.currentFloor;
+			this.reloadPeople();
+			this.moveNextFloor();
+			//setTimeout(Building.Elevator.move, timer);
+			setTimeout(this.move.bind(this), timer);
+		} else {
+			this.isMoving = false;
+			this.stats.finalPos = this.currentFloor;
+
+			let infoElevator = document.getElementById("infoElevator");
+			this.stats.displayResults(infoElevator);
+		}
+		this.draw(previousFloor);
+	};
+
+
+	this.draw = function (previusFloor = 0) {
+		let canvas = document.getElementById("canvas");
+		let ctx = canvas.getContext("2d");
+		ctx.save();
+		ctx.beginPath();
+		ctx.clearRect(481, 518 - (previusFloor * 55), 48, 50);
+		ctx.fillStyle = "blue";
+		ctx.fillRect(481, 518 - (this.currentFloor * 55), 48, 50);
+		drawPersonInTheElevator.bind(this);
+		ctx.restore();
+	};
+
+	function drawPersonInTheElevator() {
+		let canvas = document.getElementById("canvas");
+		let ctx = canvas.getContext("2d");
+		ctx.save();
+		ctx.fillStyle = "white";
+		ctx.font = "14px Georgia";
+
+		let height = 540;
+		let width = 0;
+		for (let i = 0; i < this.people.length; i++) {
+			if (Math.floor(i / 5) > 0)
+				height = 560;
+			if (width >= 5)
+				width = 0;
+			ctx.fillText(this.people[i].destinationFloor, 482 + (width * 9), height - (this.currentFloor * 55));
+			width++;
+
+		}
+		ctx.restore();
+	}
+
 }
