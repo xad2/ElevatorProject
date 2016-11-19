@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Project</title>
+        <meta charset="utf-8" />
+        <link href="style/style.css" rel="stylesheet" type="text/css" />
+        <script src="script/functions.js" defer></script>
+        <script src="script/person.js" defer></script>
+        <script src="script/floors.js" defer></script>
+        <script src="script/elevator.js" defer></script>
+        <script src="script/stats.js" defer></script>
+        <script src="script/building.js" defer></script>
+    </head>
+    <header>
+        <nav>
+        <ul>
+            <li><h1> Actions</h1></li>
+            <li><input type="button" value="test" onclick="test()"></li>
+            <li><button onclick="addRandomPerson()">add person to random floors</button></li>
+            
+            <li><input type="button" onclick="addPerson()" value="add person">
+            <li>Current Floor:<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"></li>
+            <li>Destination Floor:<input type="number" id="floorOut" min="0" max="9"></li>
+            <li><input type="button" onclick="removePerson()" value="remove person"></li>
+            <li>See who's in floor number <input type="number" id="lookAtFloor" value="0" onchange="displayFloorInfo();"></li>
+            
+        </ul>
+        </nav>
+    </header>
+    <body>
+        <main>
+            <!-- <h1>
+
+            Alexandre
+
+            <br>
+
+            Ludwig N. Vasconcelos
+
+          <br>
+
+           Final Project
+
+      </h1>
+
+        <h2>Elevator</h2> -->
+            <!-- <form> -->
+            <!--</form>-->
+            <div class="info">
+                <p id="infoFloor" class="infoFloor"> </p>
+                <p id="infoPerson" class="infoPerson">p</p>
+                
+                <div class="infoElevator"></div>
+            </div>
+            <canvas id="canvas" width="600" height="600"></canvas>
+        </main>
+    </body>
+</html>

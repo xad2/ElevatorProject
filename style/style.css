@@ -2,25 +2,51 @@ canvas{
 	border: 1px solid #000000;
 	background-image: url("../images/Landscape.jpg");
 	background-size: 100%;
-	float: right;
+	/*float: right;*/
+	margin-left: 20px;
 }
 
-#info{
+nav{
+    border: solid 1px;
+    float: left;
+    width: 15%;
+    height: 600px;
+    text-align: left;
+    
+}
+ul{
+    margin: 0 auto ;
+    padding: 0;
+    list-style: none;
+}
+ul > li{
+    
+    text-align: center;
+}
+.info{
 	/*border: solid;*/
-	float: left;
-	width: 40%;
+    margin-left: 20px;
+	padding-left: 20px;
+    border: solid red 0.5px;
+    border-right: solid black 0.5px;
+    border-left: solid black 0.5px;
+    float: left;
+    width: 20%;
 	height: 600px;
+	font: 14px Verdana;
+    color: white;
+    background-color: black;
 }
 
-#infoPerson{
-	/*border: solid;*/
-	float: left;
-	width: 49%;
-	height: 100%;
+.info > p{
+    padding-left: 20px;
+	width: auto;
+	height: auto;
+	
 }
-#infoElevator{
+/*infoElevator{*/
 	/*border: solid;*/
-	float: right;
-	width: 49%;
-	height: 100%;
-}
+/*	float: right;*/
+/*	width: 49%;*/
+/*	height: 100%;*/
+/*}*/

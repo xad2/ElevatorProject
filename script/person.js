@@ -1,5 +1,8 @@
 /*jshint esversion: 6 */
-/*globals direction, Elevator, document, Statistics, console */
+/*globals direction, Elevator, document, Statistics, console, PERSON_INI_POSITION_X, PERSON_INI_POSITION_Y, BOX_HEIGHT, BOX_WIDTH*/
+  
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
 
 
 function person(nameCommentary, currentFloor, destinationFloor) {
@@ -30,41 +33,41 @@ function person(nameCommentary, currentFloor, destinationFloor) {
 	    infoPerson.innerHTML += "Commentary: " + this.info.commentary;
 	    this.stats.displayResults(infoPerson);
 	};
-
+    
+    
 
 }
 
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
+
 
 
 function drawPersonInTheFloor(floorNumber, amountOfPeople) {
-	ctx.clearRect(405, 530 - (floorNumber * 55), 60, 15);
+    ctx.clearRect(PERSON_INI_POSITION_X, PERSON_INI_POSITION_Y - (floorNumber * 55), 50, 40);
 	for (let i = 0; i < amountOfPeople; i++)
 		ctx.fillRect(460 - (i * 8), 530 - (floorNumber * 55), 5, 15);
 }
 
 
 function drawPersonInTheFloor(floor) {
-	ctx.clearRect(402, 520 - (floor.number * 55), 76, 40);
+	ctx.clearRect(PERSON_INI_POSITION_X, PERSON_INI_POSITION_Y - (floor.number * 55), 50, 40);
 	for (let i = 0; i < floor.people.length; i++)
-		ctx.fillText(floor.people[i].destinationFloor, 460 - (i * 8), 540 - (floor.number * 55));
+		ctx.fillText(floor.people[i].destinationFloor, PERSON_INI_POSITION_X - (i * 8), PERSON_INI_POSITION_Y - (floor.number * BOX_HEIGHT));
 
 }
 
-hite";
-	ctx.font = "14px Georgia";
+// hite";
+// 	ctx.font = "14px Georgia";
 
-	let height = 540;
-	let width = 0;
-	for (let i = 0; i < Elevator.people.length; i++) {
-		if (Math.floor(i / 5) > 0)
-			height = 560;
-		if (width >= 5)
-			width = 0;		
-		ctx.fillText(Elevator.people[i].destinationFloor, 482 + (width * 9), height - (Elevator.currentFloor * 55));
-		width++;
+// 	let height = 540;
+// 	let width = 0;
+// 	for (let i = 0; i < Elevator.people.length; i++) {
+// 		if (Math.floor(i / 5) > 0)
+// 			height = 560;
+// 		if (width >= 5)
+// 			width = 0;		
+// 		ctx.fillText(Elevator.people[i].destinationFloor, 482 + (width * 9), height - (Elevator.currentFloor * 55));
+// 		width++;
 
-	}
-	ctx.restore();
-}
+// 	}
+// 	ctx.restore();
+// }

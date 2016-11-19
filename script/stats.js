@@ -26,15 +26,15 @@ function Statistics() {
 	};
 
 	this.displayResults = function (info) {
-		info.innerHTML +=
-		"||||||||||||||||||||||||||||||||" + "<br>"+
+		info.innerHTML += ""+
+		"\n||||||||||||||||||||||||||||||||" + "<br>"+
 		"Original position: " + this.originalPos + "<br>"+
 		"Final position: " + this.finalPos + "<br>"+
 		"Number of stops: " + this.numberOfStops + "<br>"+
-		"Number of moviments: " + this.totalMovement + "<br>"+
+		"Number of movements: " + this.totalMovement + "<br>"+
 		"Total time passed: " + this.calculateTimePassed(5, timer/1000) + "<br>"+
-		"||||||||||||||||||||||||||||||||" + "<br>";
+		"\n||||||||||||||||||||||||||||||||" + "<br>";
 	};
 	return this;
 }
-}
+

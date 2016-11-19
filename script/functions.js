@@ -1,4 +1,13 @@
 /*jshint esversion: 6 */
+
+
+
+
+
+
+
+
+
 let randomValue = function(max) {
     return Math.round(Math.random() * max);
 };
@@ -41,15 +50,15 @@ let commentsArray = ["My best elevator experience!",
     "The elevator-in-itself is essentially just a box that takes people in and out.",
     "I'm gonna bomb this elevator next time it stops before I get to where I want!"]; //15          
 
-let namesCommentsArray = [];
-let NameCommentsConstructor = function(name, commentary) {
+let infoArray = [];
+let InfoConstructor = function(name, commentary) {
     return {
         name: name,
         commentary: commentary
     };
 };
 
-let populateNamesCommentsArray = function() {
+let populateInfoArray = function() {
 
     //array for checking whether that name has been used.
     //true if used, false otherwise
@@ -70,9 +79,9 @@ let populateNamesCommentsArray = function() {
         parallelArray[randomNameIndex] = true;
 
         randomCommentIndex = randomValue(commentsArray.length-1);
-        let object = NameCommentsConstructor(namesArray[randomNameIndex], 
+        let object = InfoConstructor(namesArray[randomNameIndex], 
         commentsArray[randomCommentIndex]);
-        namesCommentsArray.push(object);
+        infoArray.push(object);
 
 
     }

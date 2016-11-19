@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
-/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer */
+/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, ELEVATOR_BOTTOM_Y, ELEVATOR_BOTTOM_X, BOX_HEIGHT, BOX_WIDTH */
 /// <reference path="floors.js" />
 /// <reference path="person.js" />
-
+/// <reference path="functions.js" />
 var direction = {
 	UP: 1,
 	DOWN: -1,
@@ -185,14 +185,14 @@ function Elevator(capacity) {
 	};
 
 
-	this.draw = function (previusFloor = 0) {
+	this.draw = function (previousFloor = 0) {
 		let canvas = document.getElementById("canvas");
 		let ctx = canvas.getContext("2d");
 		ctx.save();
 		ctx.beginPath();
-		ctx.clearRect(481, 518 - (previusFloor * 55), 48, 50);
+		ctx.clearRect(ELEVATOR_BOTTOM_X, ELEVATOR_BOTTOM_Y - (previousFloor * BOX_HEIGHT), BOX_WIDTH-2, BOX_HEIGHT-2);
 		ctx.fillStyle = "blue";
-		ctx.fillRect(481, 518 - (this.currentFloor * 55), 48, 50);
+		ctx.fillRect(ELEVATOR_BOTTOM_X, ELEVATOR_BOTTOM_Y - (this.currentFloor * BOX_HEIGHT), BOX_WIDTH-2, BOX_HEIGHT-2);
 		drawPersonInTheElevator.bind(this);
 		ctx.restore();
 	};
@@ -204,14 +204,14 @@ function Elevator(capacity) {
 		ctx.fillStyle = "white";
 		ctx.font = "14px Georgia";
 
-		let height = 540;
+		let height = ELEVATOR_BOTTOM_Y- BOX_HEIGHT + 14;
 		let width = 0;
 		for (let i = 0; i < this.people.length; i++) {
 			if (Math.floor(i / 5) > 0)
-				height = 560;
+				height = height-14;
 			if (width >= 5)
 				width = 0;
-			ctx.fillText(this.people[i].destinationFloor, 482 + (width * 9), height - (this.currentFloor * 55));
+			ctx.fillText(this.people[i].destinationFloor, ELEVATOR_BOTTOM_X+1 + (width * 9), height - (this.currentFloor * BOX_HEIGHT));
 			width++;
 
 		}
