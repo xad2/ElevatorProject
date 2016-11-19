@@ -13,6 +13,7 @@ var BuildImage = new Image();
 BuildImage.src = "images/Building.jpg";
 
 var Building = new building(10, 10);
+Building.drawBuilding();
 
 function building(amountOfFloors, elevatorCapacity) {
 	this.elevator = new Elevator(elevatorCapacity);
@@ -21,34 +22,35 @@ function building(amountOfFloors, elevatorCapacity) {
 		this.floors.push(new floor(i));
 
 
-	this.callElevator = function(floor) {
+	this.callElevator = function (floor) {
 		this.elevator.addCalled(floor);
 		if (!this.elevator.isMoving) {
 			this.elevator.initStatistics();
 			this.elevator.move();
 		}
 	};
+
+	this.drawBuilding = function () {
+		let canvas = document.getElementById("canvas");
+		let ctx = canvas.getContext("2d");
+		ctx.drawImage(BuildImage, 400, 20, 100, 100);
+
+		ctx.beginPath();
+		ctx.save();
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.rect(400, 20, 200, 550);
+		for (let i = 0; i < 10; i++) {
+			ctx.rect(480, 515 - (i * 55), 50, 55);
+			ctx.font = "16px Georgia";
+			ctx.fillText(i, 545, 545 - (i * 55));
+		}
+		ctx.stroke();
+		ctx.restore();
+		Building.elevator.draw();
+	};
 }
 
 
-function drawBuilding() {
-	let canvas = document.getElementById("canvas");
-	let ctx = canvas.getContext("2d");
-	ctx.drawImage(BuildImage, 400, 20, 100, 100);
-
-	ctx.beginPath();
-	ctx.save();
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.rect(400, 20, 200, 550);
-	for (let i = 0; i < 10; i++) {
-		ctx.rect(480, 515 - (i * 55), 50, 55);
-		ctx.font = "16px Georgia";
-		ctx.fillText(i, 545, 545 - (i * 55));
-	}
-	ctx.stroke();
-	ctx.restore();
-	Building.elevator.draw();
-}
 
 
 function addPerson() {
@@ -82,9 +84,9 @@ function removePerson() {
 
 		if (isFloorValid(currentFloor) && isFloorValid(personFloorOut)) {
 
-			if (floors[currentFloor].people.length > 0) {
-				floors[currentFloor].people[0].destinationFloor = personFloorOut;
-				floors[currentFloor].people[0].waiting = true;
+			if (Building.floors[currentFloor].people.length > 0) {
+				Building.floors[currentFloor].people[0].destinationFloor = personFloorOut;
+				Building.floors[currentFloor].people[0].waiting = true;
 				Building.callElevator(floors[currentFloor]);
 			}
 		}
@@ -100,16 +102,12 @@ function addRandomPerson() {
 	}
 	let nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
 	let newPerson = new person(nameCommentary, currentFloor, destinationFloor);
-	floors[currentFloor].addPerson(newPerson);
+	Building.floors[currentFloor].addPerson(newPerson);
 	Building.callElevator(floors[currentFloor]);
 }
 
 
 
-
-
-
-drawBuilding();
 
 function test() {
 	/*let canvas = document.getElementById("canvas");
@@ -135,14 +133,4 @@ function test() {
 	newPerson = new person(nameCommentary, 7, 2);
 	floors[7].addPerson(newPerson);
 	Building.callElevator(floors[7]);
-}
-ray[randomValue(namesCommentsArray.length)];
-    let newPerson = new person(nameCommentary, 3, 8);
-	floors[3].addPerson(newPerson);
-	callElevator(floors[3]);
-
-	let nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
-    let newPerson = new person(nameCommentary, 7, 2);
-	floors[7].addPerson(newPerson);
-	callElevator(floors[7]);
 }

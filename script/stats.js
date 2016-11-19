@@ -37,4 +37,3 @@ function Statistics() {
 	};
 	return this;
 }
-}

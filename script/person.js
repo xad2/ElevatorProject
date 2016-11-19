@@ -38,7 +38,7 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 
-function drawPersonInTheFloor(floorNumber, amountOfPeople) {
+function drawPersonInTheFloor2(floorNumber, amountOfPeople) {
 	ctx.clearRect(405, 530 - (floorNumber * 55), 60, 15);
 	for (let i = 0; i < amountOfPeople; i++)
 		ctx.fillRect(460 - (i * 8), 530 - (floorNumber * 55), 5, 15);
@@ -52,8 +52,10 @@ function drawPersonInTheFloor(floor) {
 
 }
 
-hite";
-	ctx.font = "14px Georgia";
+function drawPersonInTheElevator() {
+ 	ctx.save();		
+ 	ctx.fillStyle = "white";		
+  	ctx.font = "14px Georgia";
 
 	let height = 540;
 	let width = 0;
