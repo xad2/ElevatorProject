@@ -1,7 +1,5 @@
 /*jshint esversion: 6 */
 /*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer */
-/// <reference path="floors.js" />
-/// <reference path="person.js" />
 
 var direction = {
 	UP: 1,
@@ -9,13 +7,16 @@ var direction = {
 	NONE: 0
 };
 
-function Elevator(capacity) {
+function Elevator(capacity, number, elevatorSize, coord) {
+	this.number = number;
 	this.currentFloor = 0;
 	this.capacity = capacity;
 	this.direction = direction.NONE;
 	this.people = [];
 	this.calledFloors = [];
 	this.stats = undefined;
+	this.elevatorSize = elevatorSize;
+	this.coord = coord;
 
 	this.initStatistics = function () {
 		this.stats = new Statistics();
@@ -33,6 +34,7 @@ function Elevator(capacity) {
 		if (!floorCalled)
 			this.calledFloors.push(floor);
 	};
+
 	function wasCalled() {
 		return (this.calledFloors.length > 0) || (this.people.length > 0);
 	}
@@ -57,6 +59,7 @@ function Elevator(capacity) {
 		} else
 			this.direction = direction.NONE;
 	}
+
 	function checkDirection() {
 		let up = false;
 		let down = false;
@@ -66,7 +69,7 @@ function Elevator(capacity) {
 			if (this.calledFloors[i].number < this.currentFloor)
 				down = true;
 		}
-		let peopleInThisFloor = floors[this.currentFloor].people;
+		let peopleInThisFloor = Building.floors[this.currentFloor].people;
 		for (let i = 0; i < peopleInThisFloor.length; i++) {
 			if (peopleInThisFloor[i].waiting) {
 				if (peopleInThisFloor[i].destinationFloor > this.currentFloor)
@@ -95,6 +98,7 @@ function Elevator(capacity) {
 		if (peopleEntered || peopleLeft)
 			this.stats.incrementNumOfStops();
 	};
+
 	function getPeople() {
 		let peopleEntered = false;
 		checkDirection.call(this);
@@ -121,6 +125,7 @@ function Elevator(capacity) {
 		return peopleEntered;
 
 	}
+
 	function removePeople() {
 		let peopleLeft = false;
 		for (let i = 0; i < this.people.length; i++) {
@@ -144,6 +149,7 @@ function Elevator(capacity) {
 		return peopleLeft;
 
 	}
+
 	function removeCalledFloors() {
 		let isAnyoneWaiting = false;
 		for (let i = 0; i < Building.floors[this.currentFloor].people.length; i++) {
@@ -164,7 +170,7 @@ function Elevator(capacity) {
 	let previousFloor;
 	this.isMoving = false;
 	this.move = function () {
-		console.log(this.currentFloor + " Elevator: " + this.people.length);
+		console.log(" Elevator " + this.number + ": current floor - " + this.currentFloor + " people - " + this.people.length);
 		this.draw(previousFloor);
 		/*create a new function */
 		if (wasCalled.call(this)) {
@@ -190,9 +196,9 @@ function Elevator(capacity) {
 		let ctx = canvas.getContext("2d");
 		ctx.save();
 		ctx.beginPath();
-		ctx.clearRect(481, 518 - (previusFloor * 55), 48, 50);
+		ctx.clearRect(132 + (100*this.number), 12+(100*(Building.floors.length-1-previusFloor)), 76, 95);
 		ctx.fillStyle = "blue";
-		ctx.fillRect(481, 518 - (this.currentFloor * 55), 48, 50);
+		ctx.fillRect(132 + (100*this.number), 12+(100*(Building.floors.length-1-this.currentFloor)), 76, 95);
 		drawPersonInTheElevator.call(this);
 		ctx.restore();
 	};
@@ -201,19 +207,18 @@ function Elevator(capacity) {
 		let canvas = document.getElementById("canvas");
 		let ctx = canvas.getContext("2d");
 		ctx.save();
-		ctx.fillStyle = "white";
-		ctx.font = "14px Georgia";
+		ctx.fillStyle = "red";
 
-		let height = 540;
+		let height = 60;
 		let width = 0;
+		
 		for (let i = 0; i < this.people.length; i++) {
 			if (Math.floor(i / 5) > 0)
-				height = 560;
+				height = 100;
 			if (width >= 5)
 				width = 0;
-			ctx.fillText(this.people[i].destinationFloor, 482 + (width * 9), height - (this.currentFloor * 55));
+			ctx.fillText(this.people[i].destinationFloor, 135+ (100*this.number) + (width * 15), height - 12+(100*(Building.floors.length-1-this.currentFloor)));
 			width++;
-
 		}
 		ctx.restore();
 	}

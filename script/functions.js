@@ -1,11 +1,11 @@
 /*jshint esversion: 6 */
-let randomValue = function(max) {
-    return Math.round(Math.random() * max);
+let randomValue = function (max) {
+	return Math.round(Math.random() * max);
 };
 
-let isFloorValid = function(floorNum) {
+let isFloorValid = function (floorNum) {
 
-    return floorNum >= 0 && floorNum <= 9;
+	return floorNum >= 0 && floorNum <= Building.floors.length-1;
 
 };
 
@@ -42,40 +42,53 @@ let commentsArray = ["My best elevator experience!",
     "I'm gonna bomb this elevator next time it stops before I get to where I want!"]; //15          
 
 let namesCommentsArray = [];
-let NameCommentsConstructor = function(name, commentary) {
-    return {
-        name: name,
-        commentary: commentary
-    };
+let NameCommentsConstructor = function (name, commentary) {
+	return {
+		name: name,
+		commentary: commentary
+	};
 };
 
-let populateNamesCommentsArray = function() {
+let populateNamesCommentsArray = function () {
 
-    //array for checking whether that name has been used.
-    //true if used, false otherwise
-    let parallelArray = [];
+	//array for checking whether that name has been used.
+	//true if used, false otherwise
+	let parallelArray = [];
 
-    for (let i = 0; i < namesArray.length; i++) {
-        parallelArray[i] = false;
-    }
+	for (let i = 0; i < namesArray.length; i++) {
+		parallelArray[i] = false;
+	}
 
-    //get random name and random commentary
-    let randomNameIndex = 0;
-    let randomCommentIndex = 0;
-    for (let i = 0; i < namesArray.length; i++) {
+	//get random name and random commentary
+	let randomNameIndex = 0;
+	let randomCommentIndex = 0;
+	for (let i = 0; i < namesArray.length; i++) {
 
-        do {
-            randomNameIndex = randomValue(namesArray.length-1);
-        } while (parallelArray[randomNameIndex]);
-        parallelArray[randomNameIndex] = true;
+		do {
+			randomNameIndex = randomValue(namesArray.length - 1);
+		} while (parallelArray[randomNameIndex]);
+		parallelArray[randomNameIndex] = true;
 
-        randomCommentIndex = randomValue(commentsArray.length-1);
-        let object = NameCommentsConstructor(namesArray[randomNameIndex], 
-        commentsArray[randomCommentIndex]);
-        namesCommentsArray.push(object);
+		randomCommentIndex = randomValue(commentsArray.length - 1);
+		let object = NameCommentsConstructor(namesArray[randomNameIndex],
+			commentsArray[randomCommentIndex]);
+		namesCommentsArray.push(object);
 
 
-    }
+	}
 
 
 };
+
+function loadFile() {
+	let scene = document.getElementById('fileinput');
+	var reader = new FileReader();
+	reader.onload = function (e) {
+		var output = e.target.result;
+		output = output.split("\n");
+		console.log(output);
+		addPersonFromFile(output);
+	};
+	reader.readAsText(scene.files[0]);
+	
+}

@@ -13,44 +13,56 @@
 	<script src="script/building.js" defer></script>
 	<script src="script/person.js" defer></script>
 
-	
+
 	<script src="script/stats.js" defer></script>
-	
+
 </head>
 
 <body>
 	<main>
-		<!--	<h1>
+		<h2>
 			Alexandre
 			<br>
 			Ludwig N. Vasconcelos
       	<br>
-       	Final Project
-      </h1>
-		<h2>Elevator</h2> -->
-
+       	Final Project - Elevator Simulator
+      </h2>
 
 		<!-- <form> -->
-		<button onclick="test()">test</button>
-		<button onclick="addRandomPerson()">add person to random floors</button> |
-		<br>
+		<div id="div-top">
+			<button onclick="test()">test</button>
+			<button onclick="addRandomPerson()">add person to random floors</button> |
+			<br>
 
-		<input type="button" onclick="addPerson()" value="add person">
-		<input type="button" onclick="removePerson()" value="remove person"> | Current Floor:
-		<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"> Destination Floor:
-		<input type="number" id="floorOut" min="0" max="9"><br>
-		
+			<input type="button" onclick="addPerson()" value="add person">
+			<input type="button" onclick="removePerson()" value="remove person"> | Current Floor:
+			<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"> Destination Floor:
+			<input type="number" id="floorOut" min="0" max="9">
+			<br>
+			<input type="file" id="fileinput" />
+			<input type="button" onclick="loadFile()" value="Load scenery">
+			<br>
+			<br>
+		</div>
 
 
 		<!--</form>-->
-		
-		<div id="info">
-		<div id="infoPerson"> </div>
-		<div id="infoElevator"> </div>
+		<div id="div-canvas">
+			<canvas id="canvas" width="700" height="2600"></canvas>
+			<br>
+			<a href="#div-top">back to top</a>
 		</div>
-		<canvas id="canvas" width="600" height="600"></canvas>
+		<br>
+		<div id="div-info">
+			<div id="infoPerson"> </div>
+			<div id="infoElevator"> </div>
+			<br>
+			<a href="#div-top">back to top</a>
+		</div>
+
 
 	</main>
 </body>
 
 </html>
+
