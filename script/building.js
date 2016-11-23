@@ -6,60 +6,75 @@
 /// <reference path="person.js" />
 
 
-const timer = 1000;
-populateNamesCommentsArray();
+const timer = 800;
+var coord = function (x, y) {
+	return {
+		x: x,
+		y: y
+	};
+};
 
 var BuildImage = new Image();
 BuildImage.src = "images/Building.jpg";
 
-var Building = new building(10, 10);
+var Building;
 
-function building(amountOfFloors, elevatorCapacity) {
-	this.elevator = new Elevator(elevatorCapacity);
+function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 	this.floors = [];
 	for (let i = 0; i < amountOfFloors; i++)
 		this.floors.push(new floor(i));
 
+	let canvas = document.getElementById("canvas");
+	let buildingTop = 10;
+	let buildingBottom = canvas.height - 20;
+	let floorSize = (buildingBottom) / this.floors.length;
 
-	this.callElevator = function(floor) {
-		this.elevator.addCalled(floor);
-		if (!this.elevator.isMoving) {
-			this.elevator.initStatistics();
-			this.elevator.move();
+	this.elevators = [];
+	for (let i = 0; i < amountOfElevators; i++)
+		this.elevators.push(new Elevator(elevatorCapacity, i, floorSize - 4, coord((120 + (80 * i) + 1), buildingBottom - floorSize + 12)));
+
+
+
+	this.callElevator = function (floor) {
+		this.elevators[1].addCalled(floor);
+		if (!this.elevators[1].isMoving) {
+			this.elevators[1].initStatistics();
+			this.elevators[1].move();
 		}
 	};
+
+	this.drawBuilding = function () {
+		let size = this.elevators.length;
+		let ctx = canvas.getContext("2d");
+		//		ctx.scale(0.5, 0.5);
+		ctx.drawImage(BuildImage, 400, 20, 100, 100);
+		ctx.font = "18px Arial";
+		ctx.beginPath();
+		ctx.save();
+		ctx.textAlign = "end";
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.rect(100, buildingTop, 300 + (size * 20), (100 * this.floors.length));
+
+		for (let i = 0; i < this.elevators.length; i++) {
+			for (let j = 0; j < this.floors.length; j++) {
+				ctx.rect(130 + (100 * i), buildingTop + (j * 100), 80, 100);
+				ctx.fillText(this.floors.length - j - 1, 120, buildingTop + 50 + (100 * j));
+			}
+		}
+		ctx.stroke();
+		ctx.restore();
+		for (let i = 0; i < amountOfElevators; i++)
+			Building.elevators[i].draw();
+	};
+
+
 }
 
 
-function drawBuilding() {
-	let canvas = document.getElementById("canvas");
-	let ctx = canvas.getContext("2d");
-	ctx.drawImage(BuildImage, 400, 20, 100, 100);
-
-	ctx.beginPath();
-	ctx.save();
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	ctx.rect(400, 20, 200, 550);
-	for (let i = 0; i < 10; i++) {
-		ctx.rect(480, 515 - (i * 55), 50, 55);
-		ctx.font = "16px Georgia";
-		ctx.fillText(i, 545, 545 - (i * 55));
-	}
-	ctx.stroke();
-	ctx.restore();
-	Building.elevator.draw();
-}
-
-
-function addPerson() {
-	let currentFloor = document.getElementById("currentFloor").value;
-	let destinationFloor = document.getElementById("floorOut").value;
-
+function addPerson(currentFloor, destinationFloor) {
 	if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(destinationFloor) && destinationFloor !== "") {
-
 		currentFloor = Number(currentFloor);
 		destinationFloor = Number(destinationFloor);
-
 		if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
 			let nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
 			let newPerson = new person(nameCommentary, currentFloor, destinationFloor);
@@ -68,7 +83,14 @@ function addPerson() {
 			Building.callElevator(floors[currentFloor]);
 		}
 	}
+}
 
+function addPersonFromFile(arrPeople) {
+	for (let i = 0; i < arrPeople.length; i++) {
+		let currentFloor = Number(arrPeople[i].split(",")[0]);
+		let destinationFloor = Number(arrPeople[i].split(",")[1]);
+		addPerson(currentFloor, destinationFloor);
+	}
 }
 
 function removePerson() {
@@ -82,9 +104,9 @@ function removePerson() {
 
 		if (isFloorValid(currentFloor) && isFloorValid(personFloorOut)) {
 
-			if (floors[currentFloor].people.length > 0) {
-				floors[currentFloor].people[0].destinationFloor = personFloorOut;
-				floors[currentFloor].people[0].waiting = true;
+			if (Building.floors[currentFloor].people.length > 0) {
+				Building.floors[currentFloor].people[0].destinationFloor = personFloorOut;
+				Building.floors[currentFloor].people[0].waiting = true;
 				Building.callElevator(floors[currentFloor]);
 			}
 		}
@@ -95,54 +117,21 @@ function addRandomPerson() {
 	let currentFloor = 0;
 	let destinationFloor = 0;
 	while (currentFloor === destinationFloor) {
-		currentFloor = randomValue(9);
-		destinationFloor = randomValue(9);
+		currentFloor = randomValue(Building.floors.length-1);
+		destinationFloor = randomValue(Building.floors.length-1);
 	}
-	let nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
-	let newPerson = new person(nameCommentary, currentFloor, destinationFloor);
-	floors[currentFloor].addPerson(newPerson);
-	Building.callElevator(floors[currentFloor]);
+	addPerson(currentFloor, destinationFloor);
 }
 
+function setup() {
+	Building = new building(10, 2, 10);
+	Building.drawBuilding();
+	populateNamesCommentsArray();
+}
 
-
-
-
-
-drawBuilding();
 
 function test() {
-	/*let canvas = document.getElementById("canvas");
-	let ctx = canvas.getContext("2d");
-	ctx.drawImage(BuildImage, 450, 100, 200, 400);*/
 
-	let nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
-	let newPerson = new person(nameCommentary, 2, 1);
-	floors[2].addPerson(newPerson);
-	Building.callElevator(floors[2]);
-
-	nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
-	newPerson = new person(nameCommentary, 4, 5);
-	floors[4].addPerson(newPerson);
-	Building.callElevator(floors[4]);
-
-	nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
-	newPerson = new person(nameCommentary, 3, 8);
-	floors[3].addPerson(newPerson);
-	Building.callElevator(floors[3]);
-
-	nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
-	newPerson = new person(nameCommentary, 7, 2);
-	floors[7].addPerson(newPerson);
-	Building.callElevator(floors[7]);
 }
-ray[randomValue(namesCommentsArray.length)];
-    let newPerson = new person(nameCommentary, 3, 8);
-	floors[3].addPerson(newPerson);
-	callElevator(floors[3]);
-
-	let nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
-    let newPerson = new person(nameCommentary, 7, 2);
-	floors[7].addPerson(newPerson);
-	callElevator(floors[7]);
-}
+//test();
+setup();

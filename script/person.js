@@ -20,15 +20,15 @@ function person(nameCommentary, currentFloor, destinationFloor) {
 		this.stats = new Statistics();
 		this.stats.initStatistics(this.currentFloor, this.destinationFloor);
 	};
-	
+
 	// fazer metodo para display info (incluindo statistics.)
-	
-	this.displayInfo = function(){
+
+	this.displayInfo = function () {
 		let infoPerson = document.getElementById("infoPerson");
-		
-	    infoPerson.innerHTML = "Name: " + this.info.name + "<br>";
-	    infoPerson.innerHTML += "Commentary: " + this.info.commentary;
-	    this.stats.displayResults(infoPerson);
+
+		infoPerson.innerHTML = "Name: " + this.info.name + "<br>";
+		infoPerson.innerHTML += "Commentary: " + this.info.commentary;
+		this.stats.displayResults(infoPerson);
 	};
 
 
@@ -37,8 +37,7 @@ function person(nameCommentary, currentFloor, destinationFloor) {
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
-
-function drawPersonInTheFloor(floorNumber, amountOfPeople) {
+function drawPersonInTheFloor2(floorNumber, amountOfPeople) {
 	ctx.clearRect(405, 530 - (floorNumber * 55), 60, 15);
 	for (let i = 0; i < amountOfPeople; i++)
 		ctx.fillRect(460 - (i * 8), 530 - (floorNumber * 55), 5, 15);
@@ -46,25 +45,7 @@ function drawPersonInTheFloor(floorNumber, amountOfPeople) {
 
 
 function drawPersonInTheFloor(floor) {
-	ctx.clearRect(402, 520 - (floor.number * 55), 76, 40);
+	ctx.clearRect(320, 20 + (100 * (Building.floors.length - 1 - floor.number)), 118, 40);
 	for (let i = 0; i < floor.people.length; i++)
-		ctx.fillText(floor.people[i].destinationFloor, 460 - (i * 8), 540 - (floor.number * 55));
-
-}
-
-hite";
-	ctx.font = "14px Georgia";
-
-	let height = 540;
-	let width = 0;
-	for (let i = 0; i < Elevator.people.length; i++) {
-		if (Math.floor(i / 5) > 0)
-			height = 560;
-		if (width >= 5)
-			width = 0;		
-		ctx.fillText(Elevator.people[i].destinationFloor, 482 + (width * 9), height - (Elevator.currentFloor * 55));
-		width++;
-
-	}
-	ctx.restore();
+		ctx.fillText(floor.people[i].destinationFloor, 320 + (i * 10), 55 + (100 * (Building.floors.length - 1 - floor.number)));
 }

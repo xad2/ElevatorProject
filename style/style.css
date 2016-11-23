@@ -1,26 +1,37 @@
-canvas{
+canvas {
 	border: 1px solid #000000;
 	background-image: url("../images/Landscape.jpg");
 	background-size: 100%;
-	float: right;
+	height: 250%;
 }
-
-#info{
+#info {
 	/*border: solid;*/
 	float: left;
 	width: 40%;
 	height: 600px;
 }
-
-#infoPerson{
-	/*border: solid;*/
+#infoElevator {
+	border: 1px solid;
 	float: left;
-	width: 49%;
+	width: 50%;
 	height: 100%;
 }
-#infoElevator{
-	/*border: solid;*/
+#infoPerson {
+	border: 1px solid;
 	float: right;
 	width: 49%;
 	height: 100%;
+}
+#div-canvas {
+	/*width: 600px;*/
+	height: 600px;
+	border: 1px solid #000;
+	overflow: auto;
+}
+html,
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	/*overflow: hidden*/
 }
