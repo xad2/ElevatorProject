@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*globals document, Image, console, randomValue, floors, drawElevator, person, Elevator, setTimeout, isFloorValid, Statistics, populateNamesCommentsArray, namesCommentsArray, floor */
+/*globals document, Image, console, randomValue, floors, drawElevator, person, Elevator, setTimeout, isFloorValid, Statistics, populateInfoArray, infoArray, floor, usedNamesArray */
 /// <reference path="elevator.js" />
 /// <reference path="floors.js" />
 /// <reference path="functions.js" />
@@ -76,7 +76,16 @@ function addPerson(currentFloor, destinationFloor) {
 		currentFloor = Number(currentFloor);
 		destinationFloor = Number(destinationFloor);
 		if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
-			let nameCommentary = namesCommentsArray[randomValue(namesCommentsArray.length)];
+		    
+			let nameCommentary = "";
+			let random = 0;
+			do{
+			    random = randomValue(infoArray.length-1);
+			    
+			}while(usedNamesArray[random]);
+			usedNamesArray[random] = true;
+			nameCommentary = infoArray[random];
+			
 			let newPerson = new person(nameCommentary, currentFloor, destinationFloor);
 			newPerson.stats = new Statistics(currentFloor);
 			Building.floors[currentFloor].addPerson(newPerson);
@@ -126,7 +135,15 @@ function addRandomPerson() {
 function setup() {
 	Building = new building(10, 2, 10);
 	Building.drawBuilding();
-	populateNamesCommentsArray();
+	populateInfoArray();
+}
+
+function displayFloorInfo(){
+    let floorInfo = document.getElementById("floorInfo");
+    let value = floorInfo.value;
+    let output = document.getElementById("div-info");
+    output.innerHTML = Building.floors[value].displayInfo();
+    
 }
 
 

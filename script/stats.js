@@ -25,15 +25,15 @@ function Statistics() {
 		return (stopTime * this.numberOfStops) + (this.totalMovement * intervalTime);
 	};
 
-	this.displayResults = function (info) {
-		info.innerHTML +=
-		"||||||||||||||||||||||||||||||||" + "<br>"+
+	this.displayResults = function () {
+		return "<br>" +
 		"Original position: " + this.originalPos + "<br>"+
 		"Final position: " + this.finalPos + "<br>"+
 		"Number of stops: " + this.numberOfStops + "<br>"+
-		"Number of moviments: " + this.totalMovement + "<br>"+
-		"Total time passed: " + this.calculateTimePassed(5, timer/1000) + "<br>"+
-		"||||||||||||||||||||||||||||||||" + "<br>";
+		"Number of movements: " + this.totalMovement + "<br>"+
+		"Total time passed: " + Math.round(this.calculateTimePassed(5, timer/1000)) + "<br>"+
+		"||||||||||||||||||||||||||||||||" + "<br><br>";
+		
 	};
 	return this;
 }

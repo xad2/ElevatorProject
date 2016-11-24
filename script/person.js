@@ -1,9 +1,9 @@
 /*jshint esversion: 6 */
-/*globals direction, Elevator, document, Statistics, console */
+/*globals direction, Elevator, document, Statistics, console, Building */
 
 
-function person(nameCommentary, currentFloor, destinationFloor) {
-	this.info = nameCommentary;
+function person(info, currentFloor, destinationFloor) {
+	this.info = info;
 	this.currentFloor = currentFloor;
 	this.destinationFloor = destinationFloor;
 	this.waiting = true;
@@ -24,11 +24,12 @@ function person(nameCommentary, currentFloor, destinationFloor) {
 	// fazer metodo para display info (incluindo statistics.)
 
 	this.displayInfo = function () {
-		let infoPerson = document.getElementById("infoPerson");
+		let output = "";
 
-		infoPerson.innerHTML = "Name: " + this.info.name + "<br>";
-		infoPerson.innerHTML += "Commentary: " + this.info.commentary;
-		this.stats.displayResults(infoPerson);
+		output += "Name: " + this.info.name + "<br>";
+		output += "Commentary: " + this.info.commentary;
+		output += this.stats.displayResults();
+		return output;
 	};
 
 

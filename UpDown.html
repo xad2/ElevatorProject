@@ -8,6 +8,7 @@
 	<link href="style/style.css" rel="stylesheet" type="text/css" />
 
 	<script src="script/functions.js" defer></script>
+	<script src="script/info.js" defer></script>
 	<script src="script/elevator.js" defer></script>
 	<script src="script/floors.js" defer></script>
 	<script src="script/building.js" defer></script>
@@ -19,7 +20,7 @@
 </head>
 
 <body>
-	<main>
+	
 		<h2>
 			Alexandre
 			<br>
@@ -28,7 +29,7 @@
        	Final Project - Elevator Simulator
       </h2>
 
-		<!-- <form> -->
+        
 		<div id="div-top">
 			<button onclick="test()">test</button>
 			<button onclick="addRandomPerson()">add person to random floors</button> |
@@ -38,6 +39,8 @@
 			<input type="button" onclick="removePerson()" value="remove person"> | Current Floor:
 			<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"> Destination Floor:
 			<input type="number" id="floorOut" min="0" max="9">
+			Choose a floor to display its info:
+			<input type="number" id="floorInfo" onchange="displayFloorInfo();">
 			<br>
 			<input type="file" id="fileinput" />
 			<input type="button" onclick="loadFile()" value="Load scenery">
@@ -46,19 +49,19 @@
 		</div>
 
 
-		<!--</form>-->
+        <main>
 		<div id="div-canvas">
 			<canvas id="canvas" width="700" height="2600"></canvas>
 			<br>
 			<a href="#div-top">back to top</a>
 		</div>
-		<br>
+		
 		<div id="div-info">
 			<div id="infoPerson"> </div>
 			<div id="infoElevator"> </div>
 			<br>
-			<a href="#div-top">back to top</a>
 		</div>
+		
 
 
 	</main>

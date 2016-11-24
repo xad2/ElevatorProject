@@ -141,7 +141,7 @@ function Elevator(capacity, number, elevatorSize, coord) {
 				this.people.splice(i, 1);
 				i--;
 				person.stats.incrementNumOfStops();
-				person.displayInfo();
+				//person.displayInfo();
 				peopleLeft = true;
 			}
 

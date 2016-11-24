@@ -3,29 +3,37 @@ canvas {
 	background-image: url("../images/Landscape.jpg");
 	background-size: 100%;
 	height: 250%;
+	overflow: auto;
 }
-#info {
+#div-info {
 	/*border: solid;*/
+	float: right;
+	width: auto;
+	max-width: 30%;
+	height: auto;
+	background-color: gray;
+	/*color: white;*/
 	float: left;
-	width: 40%;
-	height: 600px;
+	display: inline-block;
+	font: 15px Verdana;
 }
 #infoElevator {
-	border: 1px solid;
+	/*border: 1px solid;*/
 	float: left;
-	width: 50%;
+	width: auto;
 	height: 100%;
 }
 #infoPerson {
-	border: 1px solid;
-	float: right;
-	width: 49%;
-	height: 100%;
+	/*border: 1px solid;*/
+	/*float: right;*/
+	width: auto;
+	height: auto;
 }
 #div-canvas {
-	/*width: 600px;*/
+	width: auto;
 	height: 600px;
 	border: 1px solid #000;
+	float: left;
 	overflow: auto;
 }
 html,
@@ -34,4 +42,8 @@ body {
 	height: 100%;
 	margin: 0;
 	/*overflow: hidden*/
+}
+
+main{
+    display: block;
 }
