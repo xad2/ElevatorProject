@@ -165,7 +165,11 @@ function Elevator(capacity, number, elevatorSize, coord) {
 		}
 
 	}
-
+	this.sameDirection = function (floorCalled, destinationFloor) {
+			return ((this.direction === direction.UP && (this.currentFloor < floorCalled) && (this.currentFloor > destinationFloor)) ||
+		 			  (this.direction === direction.DOWN && (this.currentFloor > floorCalled) && (this.currentFloor < destinationFloor)) ||
+					  (this.direction === direction.NONE));
+	}; 
 
 	let previousFloor;
 	this.isMoving = false;
@@ -196,9 +200,9 @@ function Elevator(capacity, number, elevatorSize, coord) {
 		let ctx = canvas.getContext("2d");
 		ctx.save();
 		ctx.beginPath();
-		ctx.clearRect(132 + (100*this.number), 12+(100*(Building.floors.length-1-previusFloor)), 76, 95);
+		ctx.clearRect(132 + (100 * this.number), 12 + (100 * (Building.floors.length - 1 - previusFloor)), 76, 95);
 		ctx.fillStyle = "blue";
-		ctx.fillRect(132 + (100*this.number), 12+(100*(Building.floors.length-1-this.currentFloor)), 76, 95);
+		ctx.fillRect(132 + (100 * this.number), 12 + (100 * (Building.floors.length - 1 - this.currentFloor)), 76, 95);
 		drawPersonInTheElevator.call(this);
 		ctx.restore();
 	};
@@ -207,17 +211,17 @@ function Elevator(capacity, number, elevatorSize, coord) {
 		let canvas = document.getElementById("canvas");
 		let ctx = canvas.getContext("2d");
 		ctx.save();
-		ctx.fillStyle = "red";
+		ctx.fillStyle = "white";
 
 		let height = 60;
 		let width = 0;
-		
+
 		for (let i = 0; i < this.people.length; i++) {
 			if (Math.floor(i / 5) > 0)
 				height = 100;
 			if (width >= 5)
 				width = 0;
-			ctx.fillText(this.people[i].destinationFloor, 135+ (100*this.number) + (width * 15), height - 12+(100*(Building.floors.length-1-this.currentFloor)));
+			ctx.fillText(this.people[i].destinationFloor, 135 + (100 * this.number) + (width * 15), height - 12 + (100 * (Building.floors.length - 1 - this.currentFloor)));
 			width++;
 		}
 		ctx.restore();

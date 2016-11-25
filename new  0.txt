@@ -1,0 +1,81 @@
+http://play.elevatorsaga.com/
+
+Mais proximo{
+
+If (Call > current) and D(1) 
+	Target < Current
+ 
+ }
+ 6->8, 3->0, 2->1
+
+Building{}
+	Fila [5->1]
+	AdicionarChamada(){
+		Fila.add(Floor)
+		ChecaFila();
+		}
+	ChecaFila(){
+		While(Fila>0){
+			ProcuraElevador(Fila[0])
+		}
+	}
+}
+
+ProcuraElevador(6->Up){
+	//Ordernar por mais proximo.
+
+	for (Elevadors)
+		if (Elevador[i].AceitaChamada(6->Up))
+			Fila.pop();
+			break
+		
+}
+ 
+Elevator{ 
+	CurrentFloor = 2
+	Direction = None
+	DirectionCalled = None
+	
+	people[];
+	CalledFloor[5]
+	GetPerson (targetperson){
+		Move()
+	}
+	ChangeDirection(){
+		if (people[]===0)
+			DirectionCalled();
+	}
+	AceitoChamada(3->Person.Direction){
+		if (Direction === none){
+			CalledFloor.push(5->Down);
+			Move();
+			return true
+	
+		}
+		else if(CurrentFloor < 3 and Direction.UP) || CurrentFloor > 6 and Direction.Down)
+			if(DirectionCalled === Person.Direction) {
+				CalledFloor.push(3->Down);
+				return true;
+			}
+			
+	}
+	Move(){
+		MovimentarElevador();
+		if (currentFloor in CalledFloor[5])||(currentFloor in people[{5->1}]){
+			GetPerson()
+			Remove()
+		}
+		If(people || CalledFloor)
+			Move();
+		else
+		{
+			//limpar variaveis
+			Direction = None
+			DirectionCalled = None
+		}
+	}
+	
+	 
+	
+}
+	

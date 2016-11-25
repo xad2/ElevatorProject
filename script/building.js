@@ -7,6 +7,8 @@
 
 
 const timer = 800;
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 var coord = function (x, y) {
 	return {
 		x: x,
@@ -24,7 +26,7 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 	for (let i = 0; i < amountOfFloors; i++)
 		this.floors.push(new floor(i));
 
-	let canvas = document.getElementById("canvas");
+
 	let buildingTop = 10;
 	let buildingBottom = canvas.height - 20;
 	let floorSize = (buildingBottom) / this.floors.length;
@@ -35,17 +37,31 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 
 
 
-	this.callElevator = function (floor) {
-		this.elevators[1].addCalled(floor);
-		if (!this.elevators[1].isMoving) {
-			this.elevators[1].initStatistics();
-			this.elevators[1].move();
+	this.callElevator = function (floor, destinationFloor) {
+
+		
+		//closerElevator Sort
+		
+		var sameDiretion = [];
+		for (let i = 0; i < this.elevators.length; i++) {
+			if (this.elevators[i].sameDirection(floor.number, destinationFloor))
+				sameDiretion.push(this.elevators[i]);
+		}
+		var index = 0;
+		if (sameDiretion.length > 0)
+			index = sameDiretion[0].number;
+		
+
+		this.elevators[index].addCalled(floor);
+		if (!this.elevators[index].isMoving) {
+			this.elevators[index].initStatistics();
+			this.elevators[index].move();
 		}
 	};
 
 	this.drawBuilding = function () {
 		let size = this.elevators.length;
-		let ctx = canvas.getContext("2d");
+
 		//		ctx.scale(0.5, 0.5);
 		ctx.drawImage(BuildImage, 400, 20, 100, 100);
 		ctx.font = "18px Arial";
@@ -71,25 +87,26 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 }
 
 
+
 function addPerson(currentFloor, destinationFloor) {
 	if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(destinationFloor) && destinationFloor !== "") {
 		currentFloor = Number(currentFloor);
 		destinationFloor = Number(destinationFloor);
 		if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
-		    
+
 			let nameCommentary = "";
 			let random = 0;
-			do{
-			    random = randomValue(infoArray.length-1);
-			    
-			}while(usedNamesArray[random]);
+			do {
+				random = randomValue(infoArray.length - 1);
+
+			} while (usedNamesArray[random]);
 			usedNamesArray[random] = true;
 			nameCommentary = infoArray[random];
-			
+
 			let newPerson = new person(nameCommentary, currentFloor, destinationFloor);
 			newPerson.stats = new Statistics(currentFloor);
 			Building.floors[currentFloor].addPerson(newPerson);
-			Building.callElevator(floors[currentFloor]);
+			Building.callElevator(floors[currentFloor], destinationFloor);
 		}
 	}
 }
@@ -104,19 +121,19 @@ function addPersonFromFile(arrPeople) {
 
 function removePerson() {
 	let currentFloor = document.getElementById("currentFloor").value;
-	let personFloorOut = document.getElementById("floorOut").value;
+	let destinationFloor = document.getElementById("floorOut").value;
 
-	if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(personFloorOut) && personFloorOut !== "") {
+	if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(destinationFloor) && destinationFloor !== "") {
 
 		currentFloor = Number(currentFloor);
-		personFloorOut = Number(personFloorOut);
+		destinationFloor = Number(destinationFloor);
 
-		if (isFloorValid(currentFloor) && isFloorValid(personFloorOut)) {
+		if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
 
 			if (Building.floors[currentFloor].people.length > 0) {
-				Building.floors[currentFloor].people[0].destinationFloor = personFloorOut;
+				Building.floors[currentFloor].people[0].destinationFloor = destinationFloor;
 				Building.floors[currentFloor].people[0].waiting = true;
-				Building.callElevator(floors[currentFloor]);
+				Building.callElevator(floors[currentFloor], destinationFloor);
 			}
 		}
 	}
@@ -126,24 +143,24 @@ function addRandomPerson() {
 	let currentFloor = 0;
 	let destinationFloor = 0;
 	while (currentFloor === destinationFloor) {
-		currentFloor = randomValue(Building.floors.length-1);
-		destinationFloor = randomValue(Building.floors.length-1);
+		currentFloor = randomValue(Building.floors.length - 1);
+		destinationFloor = randomValue(Building.floors.length - 1);
 	}
 	addPerson(currentFloor, destinationFloor);
 }
 
 function setup() {
-	Building = new building(10, 2, 10);
+	Building = new building(50, 2, 10);
 	Building.drawBuilding();
 	populateInfoArray();
 }
 
-function displayFloorInfo(){
-    let floorInfo = document.getElementById("floorInfo");
-    let value = floorInfo.value;
-    let output = document.getElementById("div-info");
-    output.innerHTML = Building.floors[value].displayInfo();
-    
+function displayFloorInfo() {
+	let floorInfo = document.getElementById("floorInfo");
+	let value = floorInfo.value;
+	let output = document.getElementById("div-info");
+	output.innerHTML = Building.floors[value].displayInfo();
+
 }
 
 

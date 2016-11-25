@@ -17,7 +17,8 @@ function person(info, currentFloor, destinationFloor) {
 	};
 
 	this.initStatistics = function () {
-		this.stats = new Statistics();
+		if (this.stats === undefined)
+			this.stats = new Statistics();
 		this.stats.initStatistics(this.currentFloor, this.destinationFloor);
 	};
 
@@ -34,9 +35,6 @@ function person(info, currentFloor, destinationFloor) {
 
 
 }
-
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
 
 function drawPersonInTheFloor2(floorNumber, amountOfPeople) {
 	ctx.clearRect(405, 530 - (floorNumber * 55), 60, 15);

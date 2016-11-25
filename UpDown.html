@@ -20,8 +20,8 @@
 </head>
 
 <body>
-	
-		<h2>
+
+	<h2>
 			Alexandre
 			<br>
 			Ludwig N. Vasconcelos
@@ -29,43 +29,40 @@
        	Final Project - Elevator Simulator
       </h2>
 
-        
-		<div id="div-top">
-			<button onclick="test()">test</button>
-			<button onclick="addRandomPerson()">add person to random floors</button> |
-			<br>
 
-			<input type="button" onclick="addPerson()" value="add person">
-			<input type="button" onclick="removePerson()" value="remove person"> | Current Floor:
-			<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"> Destination Floor:
-			<input type="number" id="floorOut" min="0" max="9">
-			Choose a floor to display its info:
-			<input type="number" id="floorInfo" onchange="displayFloorInfo();">
-			<br>
-			<input type="file" id="fileinput" />
-			<input type="button" onclick="loadFile()" value="Load scenery">
-			<br>
-			<br>
-		</div>
+	<div id="div-top">
+		<button onclick="test()">test</button>
+		<button onclick="addRandomPerson()">add person to random floors</button> |
+		<br>
+
+		<input type="button" onclick="addPerson()" value="add person">
+		<input type="button" onclick="removePerson()" value="remove person"> | Current Floor:
+		<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"> Destination Floor:
+		<input type="number" id="floorOut" min="0" max="9"> Choose a floor to display its info:
+		<input type="number" id="floorInfo" onchange="displayFloorInfo();">
+		<br>
+		<input type="file" id="fileinput" />
+		<input type="button" onclick="loadFile()" value="Load scenery">
+		<br>
+		<br>
+	</div>
 
 
-        <main>
+	<main>
 		<div id="div-canvas">
 			<canvas id="canvas" width="700" height="2600"></canvas>
 			<br>
-			<a href="#div-top">back to top</a>
 		</div>
-		
+
 		<div id="div-info">
 			<div id="infoPerson"> </div>
 			<div id="infoElevator"> </div>
 			<br>
 		</div>
-		
+
 
 
 	</main>
 </body>
 
 </html>
-
