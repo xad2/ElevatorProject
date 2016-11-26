@@ -8,6 +8,10 @@ function person(info, currentFloor, destinationFloor) {
 	this.destinationFloor = destinationFloor;
 	this.waiting = true;
 	this.stats = undefined;
+	
+	this.coord = undefined;
+	this.size = undefined;
+	
 	this.direction = function () {
 		if (this.currentFloor > this.destinationFloor) {
 			return direction.DOWN;
@@ -33,6 +37,14 @@ function person(info, currentFloor, destinationFloor) {
 		return output;
 	};
 
+    this.draw = function(){
+        let ctx = document.getElementById("canvas").getContext("2d");
+        
+        ctx.moveTo(this.coord.x-5, this.coord.y-5);
+        ctx.arc(this.coord.x,this.coord.y, this.size.width/2, 0, Math.PI );
+        
+    };
+
 
 }
 
@@ -44,6 +56,7 @@ function drawPersonInTheFloor2(floorNumber, amountOfPeople) {
 
 
 function drawPersonInTheFloor(floor) {
+    let ctx = document.getElementById('canvas').getContext('2d');
 	ctx.clearRect(320, 20 + (100 * (Building.floors.length - 1 - floor.number)), 118, 40);
 	for (let i = 0; i < floor.people.length; i++)
 		ctx.fillText(floor.people[i].destinationFloor, 320 + (i * 10), 55 + (100 * (Building.floors.length - 1 - floor.number)));

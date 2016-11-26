@@ -1,8 +1,6 @@
 canvas {
 	border: 1px solid #000000;
 	background-image: url("../images/Landscape.jpg");
-	background-size: 100%;
-	height: 250%;
 	overflow: auto;
 }
 #div-info {
@@ -31,10 +29,9 @@ canvas {
 }
 #div-canvas {
 	width: auto;
-	height: 600px;
-	border: 1px solid #000;
+	height: auto;
 	float: left;
-	overflow: auto;
+	
 }
 html,
 body {
