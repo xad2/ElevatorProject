@@ -30,7 +30,6 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 		}
 	};
 	this.callElevator = function () {
-		console.log(callQueue.length);
 		for (let i = 0; i < callQueue.length; i++) {
 			let closerElevators = [];
 			for (let j = 0; j < this.elevators.length; j++) {
@@ -42,7 +41,6 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 
 			for (let j = 0; j < closerElevators.length; j++) {
 				if (closerElevators[j].elevator.acceptCall(callQueue[i])) {
-					console.log("Elevador: " + closerElevators[j].elevator.number + "   Call:" + callQueue[i].floor.number);
 					callQueue.splice(i, 1);
 					i--;
 					break;
@@ -51,11 +49,17 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 
 		}
 		//TODO: Mover os elevadores apenas depois de adicionar na fila
+		startElevatorsMoving.call(this);
 		if (callQueue.length > 0) {
 			setTimeout(this.callElevator.bind(this), timer);
 		}
 
 	};
+	
+	function startElevatorsMoving(){
+		for (let i = 0; i < this.elevators.length; i++)
+			this.elevators[i].startMoving();
+	}
 
 	function findSameCallAtElevators(floorCall) {
 		for (let i = 0; i < this.elevators.length; i++) {

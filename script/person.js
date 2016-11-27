@@ -1,7 +1,6 @@
 /*jshint esversion: 6 */
 /*globals direction, Elevator, document, Statistics, console, Building, coord, size, HomerImage, ctx */
 
-
 function person(info, currentFloor, destinationFloor) {
 	this.info = info;
 	this.currentFloor = currentFloor;
@@ -26,18 +25,13 @@ function person(info, currentFloor, destinationFloor) {
 	};
 
 	//TODO: fazer metodo para display info (incluindo statistics.)
-
 	this.displayInfo = function () {
 		let output = "";
-
 		output += "Name: " + this.info.name + "<br>";
 		output += "Commentary: " + this.info.commentary;
 		output += this.stats.displayResults();
 		return output;
 	};
-	
-	
-
 
 	this.draw = function () {
 		if (this.waiting)
@@ -56,14 +50,3 @@ function person(info, currentFloor, destinationFloor) {
 		ctx.stroke();
 	};
 }
-//TODO: Remover função
-/*
-function drawPersonInTheFloor_(floor) {
-	let ctx = document.getElementById('canvas').getContext('2d');
-	ctx.clearRect(320, 20 + (100 * (Building.floors.length - 1 - floor.number)), 118, 40);
-	ctx.save();
-	ctx.textAlign = "start";
-	for (let i = 0; i < floor.people.length; i++)
-		ctx.fillText(floor.people[i].destinationFloor, 320 + (i * 10), 55 + (100 * (Building.floors.length - 1 - floor.number)));
-	ctx.restore();
-}*/

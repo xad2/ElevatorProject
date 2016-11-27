@@ -74,7 +74,7 @@ function displayFloorInfo() {
 }
 
 function setCanvasMeasurements(floorsAmount, elevatorsAmount) {
-	canvas.height = (floorsAmount * 100)+10;
+	canvas.height = (floorsAmount * 100) + 10;
 	canvas.width += 100 * elevatorsAmount; //width for 1 elev: 100
 }
 
@@ -85,7 +85,7 @@ function addPerson(currentFloor, destinationFloor) {
 		destinationFloor = Number(destinationFloor);
 		if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
 
-			
+
 			let random = 0;
 			do {
 				random = randomValue(infoArray.length - 1);
@@ -134,15 +134,19 @@ function removePerson(currentFloor, destinationFloor) {
 		destinationFloor = Number(destinationFloor);
 
 		if (isFloorValid(currentFloor) && isFloorValid(destinationFloor)) {
-
-			if (Building.floors[currentFloor].people.length > 0) {
-				let newPerson = Building.floors[currentFloor].people[0];
-				newPerson.destinationFloor = destinationFloor;
-				newPerson.waiting = true;
-				newPerson.clear();
-				newPerson.draw();
-				Building.addCall(floorCall(Building.floors[currentFloor], newPerson.direction()));
+			let people = Building.floors[currentFloor].people;
+			for (let i = 0; i < people.length; i++) {
+				if (!people[i].waiting) {
+					let newPerson = people[i];
+					newPerson.destinationFloor = destinationFloor;
+					newPerson.waiting = true;
+					newPerson.clear();
+					newPerson.draw();
+					Building.addCall(floorCall(Building.floors[currentFloor], newPerson.direction()));
+					break;
+				}
 			}
+
 		}
 	}
 }
@@ -151,13 +155,12 @@ function removePersonFromHTML() {
 	let currentFloor = document.getElementById("currentFloor").value;
 	let destinationFloor = document.getElementById("floorOut").value;
 	removePerson(currentFloor, destinationFloor);
-
 }
 
 
 
 function setup() {
-	Building = new building(8, 2, 10);
+	Building = new building(8, 3, 5);
 	Building.drawBuilding();
 	addEventListeners();
 	populateInfoArray();

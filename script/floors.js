@@ -15,12 +15,10 @@ function floor(number, size, coord) {
 	this.addPerson = function (person) {
 		this.people.push(person);
 		this.drawPeopleInThisFloor();
-		//drawPersonInTheFloor(this);
 	};
 	this.removePerson = function (personIndex) {
 		this.people[personIndex].clear();
 		this.people.splice(personIndex, 1);
-		//drawPersonInTheFloor(this);
 	};
 
 	/**
@@ -56,9 +54,8 @@ function floor(number, size, coord) {
 
 	this.displayInfo = function () {
 		let output = "";
-		if (this.people.length === 0) {
+		if (this.people.length === 0)
 			return "<p>There's no one on this floor!</p>";
-		}
 
 		output += "<p> <b>Displaying information of people at floor number " + this.number + " </b></p>";
 		output += "||||||||||||||||||||||||||||||||" + "<br>";
