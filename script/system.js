@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 /*globals document, randomValue, isFloorValid, infoArray, usedNamesArray, building, person, Statistics, populateInfoArray,
-floorCall
+floorCall, Image
 */
 const timer = 800;
 const canvas = document.getElementById("canvas");
@@ -74,7 +74,6 @@ function displayFloorInfo() {
 }
 
 function setCanvasMeasurements(floorsAmount, elevatorsAmount) {
-
 	canvas.height = (floorsAmount * 100)+10;
 	canvas.width += 100 * elevatorsAmount; //width for 1 elev: 100
 }
@@ -140,6 +139,8 @@ function removePerson(currentFloor, destinationFloor) {
 				let newPerson = Building.floors[currentFloor].people[0];
 				newPerson.destinationFloor = destinationFloor;
 				newPerson.waiting = true;
+				newPerson.clear();
+				newPerson.draw();
 				Building.addCall(floorCall(Building.floors[currentFloor], newPerson.direction()));
 			}
 		}

@@ -95,12 +95,16 @@ function Elevator(capacity, number, elevatorSize, coord) {
 		if (hasDestination.call(this)) {
 			switch (this.direction) {
 				case direction.DOWN:
-					if (this.currentFloor > 0)
+					if (this.currentFloor > 0){
 						this.currentFloor--;
+						this.coord.y += 100;
+					}
 					break;
 				case direction.UP:
-					if (this.currentFloor < Building.floors.length)
+					if (this.currentFloor < Building.floors.length){
 						this.currentFloor++;
+						this.coord.y -= 100;
+					}
 					break;
 				case direction.NONE:
 					break;

@@ -114,6 +114,7 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 	};
 
 	function buildingConstructor(amountOfFloors, amountOfElevators, elevatorCapacity) {
+		setCanvasMeasurements(amountOfFloors, amountOfElevators); // need to set first in order to update variables.
 		for (let i = 0; i < amountOfFloors; i++){
 			let newSize = new size(80*amountOfElevators + spacesBetweenElevators , 100*amountOfElevators);
 			let newCoord = new coordinates(130, firstFloorY() - (i * 100));
@@ -122,7 +123,7 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 		}
 		for (let i = 0; i < amountOfElevators; i++)
 			this.elevators.push(new Elevator(elevatorCapacity, i, floorSize - 4, coordinates((120 + (100 * i) + 1), firstFloorY() + 12)));
-		setCanvasMeasurements(amountOfFloors, amountOfElevators); // need to set first in order to update variables.
+		
 	}
 
 	buildingConstructor.call(this, amountOfFloors, amountOfElevators, elevatorCapacity);

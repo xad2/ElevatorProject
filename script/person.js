@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*globals direction, Elevator, document, Statistics, console, Building, coord, size, HomerImage */
+/*globals direction, Elevator, document, Statistics, console, Building, coord, size, HomerImage, ctx */
 
 
 function person(info, currentFloor, destinationFloor) {
@@ -40,8 +40,6 @@ function person(info, currentFloor, destinationFloor) {
 
 
 	this.draw = function () {
-		//let ctx = document.getElementById("canvas").getContext("2d");
-
 		if (this.waiting)
 			ctx.drawImage(HomerImage, this.coord.x, this.coord.y);
 		else {
@@ -54,7 +52,6 @@ function person(info, currentFloor, destinationFloor) {
 	};
 
 	this.clear = function () {
-		let ctx = document.getElementById("canvas").getContext("2d");
 		ctx.clearRect(this.coord.x, this.coord.y, this.size.width, this.size.height);
 		ctx.stroke();
 	};
