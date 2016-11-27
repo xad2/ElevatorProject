@@ -2,9 +2,9 @@
 /*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx */
 
 var direction = {
-	UP: 1,
-	DOWN: -1,
-	NONE: 0
+    UP: 1,
+    DOWN: -1,
+    NONE: 0
 };
 
 function Elevator(capacity, number, elevatorSize, coord) {

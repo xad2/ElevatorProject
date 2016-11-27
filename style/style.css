@@ -25,10 +25,11 @@ canvas {
 	/*border: 1px solid;*/
 	/*float: right;*/
 	text-align: justify;
- 	float: left;	
+	float: left;
 	width: auto;
 	height: auto;
 }
+
 #div-canvas {
 	width: auto;
 	height: auto;

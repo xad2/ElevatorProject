@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*globals document, Image, console, randomValue, floors, drawElevator, person, Elevator, setTimeout, isFloorValid, Statistics, populateInfoArray, infoArray, floor, usedNamesArray, canvas, timer, ctx, coord, size, setCanvasMeasurements */
+/*globals document, Image, console, randomValue, floors, drawElevator, person, Elevator, setTimeout, isFloorValid, Statistics, populateInfoArray, infoArray, floor, usedNamesArray, canvas, timer, ctx, coordinates, size, setCanvasMeasurements */
 
 var closerElevator = function (currentFloor, elevator) {
 	return {
@@ -77,7 +77,7 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 				let y = buildingTop + (j * 100);
             let width = 80;
             let height = 100;
-            ctx.rect(x, y,width, height)				
+            ctx.rect(x, y,width, height);				
 				
 			}
 		}
