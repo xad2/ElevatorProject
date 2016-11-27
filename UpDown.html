@@ -11,11 +11,11 @@
 	<script src="script/info.js" defer></script>
 	<script src="script/elevator.js" defer></script>
 	<script src="script/floors.js" defer></script>
+	<script src="script/calls.js" defer></script>
 	<script src="script/building.js" defer></script>
 	<script src="script/person.js" defer></script>
-
-
 	<script src="script/stats.js" defer></script>
+	<script src="script/system.js" defer></script>
 
 </head>
 
@@ -35,8 +35,8 @@
 		<button onclick="addRandomPerson()">add person to random floors</button> |
 		<br>
 
-		<input type="button" onclick="addPerson()" value="add person">
-		<input type="button" onclick="removePerson()" value="remove person"> | Current Floor:
+		<input type="button" onclick="addPersonFromHTML()" value="add person">
+		<input type="button" onclick="removePersonFromHTML()" value="remove person"> | Current Floor:
 		<input type="number" name="currentFloor" id="currentFloor" min="0" max="9"> Destination Floor:
 		<input type="number" id="floorOut" min="0" max="9"> Choose a floor to display its info:
 		<input type="number" id="floorInfo" onchange="displayFloorInfo();">

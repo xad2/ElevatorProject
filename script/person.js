@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*globals direction, Elevator, document, Statistics, console, Building */
+/*globals direction, Elevator, document, Statistics, console, Building, coord, size, HomerImage, ctx*/
 
 
 function person(info, currentFloor, destinationFloor) {
@@ -8,10 +8,10 @@ function person(info, currentFloor, destinationFloor) {
 	this.destinationFloor = destinationFloor;
 	this.waiting = true;
 	this.stats = undefined;
-	
+
 	this.coord = undefined;
 	this.size = undefined;
-	
+
 	this.direction = function () {
 		if (this.currentFloor > this.destinationFloor) {
 			return direction.DOWN;
@@ -26,7 +26,7 @@ function person(info, currentFloor, destinationFloor) {
 		this.stats.initStatistics(this.currentFloor, this.destinationFloor);
 	};
 
-	// fazer metodo para display info (incluindo statistics.)
+	//TODO: fazer metodo para display info (incluindo statistics.)
 
 	this.displayInfo = function () {
 		let output = "";
@@ -37,27 +37,34 @@ function person(info, currentFloor, destinationFloor) {
 		return output;
 	};
 
-    this.draw = function(){
-        let ctx = document.getElementById("canvas").getContext("2d");
-        
-        ctx.moveTo(this.coord.x-5, this.coord.y-5);
-        ctx.arc(this.coord.x,this.coord.y, this.size.width/2, 0, Math.PI );
-        
-    };
+	this.draw = function () {
+		//let ctx = document.getElementById("canvas").getContext("2d");
 
+		if (this.waiting)
+			ctx.drawImage(HomerImage, this.coord.x, this.coord.y);
+		else {
+			ctx.save();
+			ctx.translate(this.coord.x + this.size.width, this.coord.y);
+			ctx.scale(-1, 1);
+			ctx.drawImage(HomerImage, 0, 0);
+			ctx.restore();
+		}
+	};
 
+	this.clear = function () {
+		let ctx = document.getElementById("canvas").getContext("2d");
+		ctx.clearRect(this.coord.x, this.coord.y, this.size.width, this.size.height);
+		ctx.stroke();
+	};
 }
-
-function drawPersonInTheFloor2(floorNumber, amountOfPeople) {
-	ctx.clearRect(405, 530 - (floorNumber * 55), 60, 15);
-	for (let i = 0; i < amountOfPeople; i++)
-		ctx.fillRect(460 - (i * 8), 530 - (floorNumber * 55), 5, 15);
-}
-
-
-function drawPersonInTheFloor(floor) {
-    let ctx = document.getElementById('canvas').getContext('2d');
+//TODO: Remover função
+/*
+function drawPersonInTheFloor_(floor) {
+	let ctx = document.getElementById('canvas').getContext('2d');
 	ctx.clearRect(320, 20 + (100 * (Building.floors.length - 1 - floor.number)), 118, 40);
+	ctx.save();
+	ctx.textAlign = "start";
 	for (let i = 0; i < floor.people.length; i++)
 		ctx.fillText(floor.people[i].destinationFloor, 320 + (i * 10), 55 + (100 * (Building.floors.length - 1 - floor.number)));
-}
+	ctx.restore();
+}*/

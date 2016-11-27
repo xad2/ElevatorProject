@@ -1,5 +1,5 @@
-/*jshint esversion: 6 */
-/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer */
+/*jshint esversion: 6*/
+/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx */
 
 var direction = {
 	UP: 1,
@@ -8,39 +8,91 @@ var direction = {
 };
 
 function Elevator(capacity, number, elevatorSize, coord) {
+	//'use strict';
 	this.number = number;
-	this.currentFloor = 0;
 	this.capacity = capacity;
+	this.currentFloor = 0;
+	this.destinationFloors = [];
+	this.calledFloor = [];
 	this.direction = direction.NONE;
 	this.people = [];
-	this.calledFloors = [];
 	this.stats = undefined;
 	this.elevatorSize = elevatorSize;
 	this.coord = coord;
+	let isMoving = false;
+	let previousFloor;
 
-	this.initStatistics = function () {
+	function initStatistics() {
 		this.stats = new Statistics();
 		this.stats.initStatistics(this.currentFloor, 0);
-	};
-
-
-	this.addCalled = function (floor) {
-		let floorCalled = false;
-		for (let i = 0; i < this.calledFloors.length; i++) {
-			floorCalled = (this.calledFloors[i].number === floor.number);
-			if (floorCalled)
-				break;
-		}
-		if (!floorCalled)
-			this.calledFloors.push(floor);
-	};
-
-	function wasCalled() {
-		return (this.calledFloors.length > 0) || (this.people.length > 0);
 	}
 
+	function hasDestination() {
+		return (this.destinationFloors.length > 0) || (this.people.length > 0);
+	}
+	this.hasCalledFloor = function (calledFloor, onlyFloor = false) {
+		for (let i = 0; i < this.calledFloor.length; i++) {
+			if (this.calledFloor[i].floor === calledFloor.floor) {
+				if ((!onlyFloor) && (this.calledFloor[i].direction === calledFloor.direction))
+					return {
+						found: true,
+						index: i
+					};
+				else
+					return {
+						found: true,
+						index: i
+					};
+			}
+		}
+		return {
+			found: false,
+			index: undefined
+		};
+
+	};
+
+	this.acceptCall = function (calledFloor) { //floor, callDirection
+
+		if (!hasDestination.call(this)) {
+			addDestination.call(this, calledFloor.floor);
+			this.calledFloor.push(calledFloor);
+			return true;
+		} else {
+			//checking if the floor is in the same direction of the elevator
+			if ((this.currentFloor <= calledFloor.floor.number && this.direction === direction.UP) ||
+				(this.currentFloor >= calledFloor.floor.number && this.direction === direction.DOWN)) {
+				//checking if the floor called direction is in the same direction of the Elevator
+				if (this.direction === calledFloor.direction) {
+					addDestination.call(this, calledFloor.floor);
+					this.calledFloor.push(calledFloor);
+					return true;
+				}
+			}
+		}
+		return false;
+
+	};
+
+	function addDestination(floor) {
+		var wasTheFloorCalledBefore = false;
+		for (let i = 0; i < this.destinationFloors.length; i++) {
+			wasTheFloorCalledBefore = (this.destinationFloors[i].number === floor.number);
+			if (wasTheFloorCalledBefore)
+				break;
+		}
+		if (!wasTheFloorCalledBefore) {
+			this.destinationFloors.push(floor);
+			if (!isMoving) {
+				this.move();
+				initStatistics.call(this);
+			}
+		}
+	}
+
+
 	function moveNextFloor() {
-		if (wasCalled.call(this)) {
+		if (hasDestination.call(this)) {
 			switch (this.direction) {
 				case direction.DOWN:
 					if (this.currentFloor > 0)
@@ -55,18 +107,49 @@ function Elevator(capacity, number, elevatorSize, coord) {
 				default:
 					break;
 			}
-			this.stats.incrementMovement();
+			//this.stats.incrementMovement(); //TODO: Mudar de lugar
 		} else
 			this.direction = direction.NONE;
 	}
+	this.move = function () {
+		//console.log(" Elevator " + this.number + ": current floor - " + this.currentFloor + " people - " + this.people.length);
+		this.draw(previousFloor);
+		updateDirection.call(this);
+		if (hasDestination.call(this)) {
+			isMoving = true;
+			previousFloor = this.currentFloor;
+			//TODO: create a new function
+			for (let i = 0; i < this.destinationFloors.length; i++) {
+				if (this.currentFloor === this.destinationFloors[i].number) {
+					//console.log("Parou no andar: " + this.currentFloor);
+					this.destinationFloors.splice(i, 1);
+					updateDirection.call(this);
+					this.reloadPeople();
+					break;
+				} //else console.log("NÃO Parou no andar: " + this.currentFloor);
 
-	function checkDirection() {
+			}
+			moveNextFloor.call(this);
+			//setTimeout(move, timer);
+			setTimeout(this.move.bind(this), timer);
+		} else {
+			isMoving = false;
+			//this.stats.finalPos = this.currentFloor;
+
+			let infoElevator = document.getElementById("infoElevator");
+			//this.stats.displayResults(infoElevator);
+		}
+		this.draw(previousFloor);
+	};
+
+
+	function updateDirection() { //TODO:Melhorar Algoritmo
 		let up = false;
 		let down = false;
-		for (let i = 0; i < this.calledFloors.length; i++) {
-			if (this.calledFloors[i].number > this.currentFloor)
+		for (let i = 0; i < this.destinationFloors.length; i++) {
+			if (this.destinationFloors[i].number > this.currentFloor)
 				up = true;
-			if (this.calledFloors[i].number < this.currentFloor)
+			if (this.destinationFloors[i].number < this.currentFloor)
 				down = true;
 		}
 		let peopleInThisFloor = Building.floors[this.currentFloor].people;
@@ -79,7 +162,7 @@ function Elevator(capacity, number, elevatorSize, coord) {
 			}
 		}
 
-		if (this.calledFloors.length === 0)
+		if (this.destinationFloors.length === 0)
 			this.direction = direction.NONE;
 		if (((this.direction === direction.UP) || (this.direction === direction.NONE)) && (up))
 			this.direction = direction.UP;
@@ -90,41 +173,15 @@ function Elevator(capacity, number, elevatorSize, coord) {
 
 	}
 
+
 	this.reloadPeople = function () {
 		let peopleLeft = removePeople.call(this);
 		let peopleEntered = getPeople.call(this);
-		checkDirection.call(this);
-		//this.stats.incrementMovement();
-		if (peopleEntered || peopleLeft)
-			this.stats.incrementNumOfStops();
+		//updateDirection.call(this);
+		//this.stats.incrementMovement(); //TODO:
+		/*if (peopleEntered || peopleLeft)
+			this.stats.incrementNumOfStops();*/
 	};
-
-	function getPeople() {
-		let peopleEntered = false;
-		checkDirection.call(this);
-		let peopleOnThisFloor = Building.floors[this.currentFloor].people;
-		for (let i = 0; i < peopleOnThisFloor.length; i++) {
-			//check the capacity
-			if (this.people.length === this.capacity)
-				break;
-			if (peopleOnThisFloor[i].waiting && ((peopleOnThisFloor[i].direction() === this.direction) || (this.direction === direction.NONE))) {
-				peopleOnThisFloor[i].waiting = false;
-
-				//adicionar a pessoa no elevador.
-				this.people.push(peopleOnThisFloor[i]);
-				this.addCalled(Building.floors[peopleOnThisFloor[i].destinationFloor]);
-				peopleOnThisFloor[i].initStatistics();
-
-				//retirar a pessoa do andar	removePerson
-				Building.floors[this.currentFloor].removePerson(i);
-				i--;
-				peopleEntered = true;
-			}
-		}
-		removeCalledFloors.call(this);
-		return peopleEntered;
-
-	}
 
 	function removePeople() {
 		let peopleLeft = false;
@@ -150,54 +207,65 @@ function Elevator(capacity, number, elevatorSize, coord) {
 
 	}
 
-	function removeCalledFloors() {
-		let isAnyoneWaiting = false;
-		for (let i = 0; i < Building.floors[this.currentFloor].people.length; i++) {
-			if (Building.floors[this.currentFloor].people[i].waiting) {
-				isAnyoneWaiting = true;
+	function getPeople() {
+		let peopleEntered = false;
+		//updateDirection.call(this);
+		let peopleOnThisFloor = Building.floors[this.currentFloor].people;
+		for (let i = 0; i < peopleOnThisFloor.length; i++) {
+			//check the capacity
+			if (this.people.length === this.capacity)
+				break;
+			if (peopleOnThisFloor[i].waiting && ((peopleOnThisFloor[i].direction() === this.direction) || (this.direction === direction.NONE))) {
+				peopleOnThisFloor[i].waiting = false;
+
+				//adicionar a pessoa no elevador.
+				this.people.push(peopleOnThisFloor[i]);
+				addDestination.call(this, Building.floors[peopleOnThisFloor[i].destinationFloor]);
+				peopleOnThisFloor[i].initStatistics();
+
+				//retirar a pessoa do andar	removePerson
+				Building.floors[this.currentFloor].removePerson(i);
+				i--;
+				peopleEntered = true;
+			}
+		}
+		removeCalledFloor.call(this);
+		//removeDestinationFloors.call(this);
+		return peopleEntered;
+
+	}
+
+
+	function removeDestinationFloors() {
+		for (let i = 0; i < this.destinationFloors.length; i++) {
+			if (this.currentFloor === this.destinationFloors[i].number) {
+				this.destinationFloors.splice(i, 1);
 				break;
 			}
 		}
-		if (!isAnyoneWaiting) {
-			for (let i = 0; i < this.calledFloors.length; i++)
-				if (this.currentFloor === this.calledFloors[i].number)
-					this.calledFloors.splice(i, 1);
+		removeCalledFloor();
+	}
+
+	function removeCalledFloor() {
+		let foundCalledFloor = this.hasCalledFloor(floorCall(Building.floors[this.currentFloor]), true);
+		if (foundCalledFloor.found) {
+			this.calledFloor.splice(foundCalledFloor.index, 1);
 		}
+		createNewCallForTheRemaining.call(this);
+
 
 	}
-	this.sameDirection = function (floorCalled, destinationFloor) {
-			return ((this.direction === direction.UP && (this.currentFloor < floorCalled) && (this.currentFloor > destinationFloor)) ||
-		 			  (this.direction === direction.DOWN && (this.currentFloor > floorCalled) && (this.currentFloor < destinationFloor)) ||
-					  (this.direction === direction.NONE));
-	}; 
 
-	let previousFloor;
-	this.isMoving = false;
-	this.move = function () {
-		console.log(" Elevator " + this.number + ": current floor - " + this.currentFloor + " people - " + this.people.length);
-		this.draw(previousFloor);
-		/*create a new function */
-		if (wasCalled.call(this)) {
-			this.isMoving = true;
-			previousFloor = this.currentFloor;
-			this.reloadPeople();
-			moveNextFloor.call(this);
-			//setTimeout(Building.Elevator.move, timer);
-			setTimeout(this.move.bind(this), timer);
-		} else {
-			this.isMoving = false;
-			this.stats.finalPos = this.currentFloor;
-
-			let infoElevator = document.getElementById("infoElevator");
-			this.stats.displayResults(infoElevator);
+	function createNewCallForTheRemaining() {
+		for (let i = 0; i < Building.floors[this.currentFloor].people.length; i++) {
+			let person = Building.floors[this.currentFloor].people[i];
+			if (person.waiting)
+				Building.addCall(floorCall(Building.floors[this.currentFloor], person.direction()));
 		}
-		this.draw(previousFloor);
-	};
+	}
 
 
 	this.draw = function (previusFloor = 0) {
-		let canvas = document.getElementById("canvas");
-		let ctx = canvas.getContext("2d");
 		ctx.save();
 		ctx.beginPath();
 		ctx.clearRect(132 + (100 * this.number), 12 + (100 * (Building.floors.length - 1 - previusFloor)), 76, 95);
@@ -208,23 +276,18 @@ function Elevator(capacity, number, elevatorSize, coord) {
 	};
 
 	function drawPersonInTheElevator() {
-		let canvas = document.getElementById("canvas");
-		let ctx = canvas.getContext("2d");
-		ctx.save();
-		ctx.fillStyle = "white";
-
-		let height = 60;
-		let width = 0;
-
+		let x = this.coord.x + 10;
+		let y = this.coord.y + 5;
 		for (let i = 0; i < this.people.length; i++) {
-			if (Math.floor(i / 5) > 0)
-				height = 100;
-			if (width >= 5)
-				width = 0;
-			ctx.fillText(this.people[i].destinationFloor, 135 + (100 * this.number) + (width * 15), height - 12 + (100 * (Building.floors.length - 1 - this.currentFloor)));
-			width++;
+			if (i % 5 === 0 && i !== 0) {
+				y += this.people[i].size.height; // start at the top
+				x = this.coord.x + 10;
+			}
+			this.people[i].coord.x = x;
+			this.people[i].coord.y = y;
+			this.people[i].draw();
+			x += this.people[i].size.width - 5;
 		}
-		ctx.restore();
 	}
 
 }

@@ -19,6 +19,7 @@ function Statistics() {
 	this.incrementMovement = function () {
 		this.totalMovement++;
 	};
+
 	//stopTime: average time for elevator staying in a floor in secs
 	//intervalTime: average time it takes to go from 1 floor to the next in sec
 	this.calculateTimePassed = function (stopTime, intervalTime) {
@@ -27,13 +28,13 @@ function Statistics() {
 
 	this.displayResults = function () {
 		return "<br>" +
-		"Original position: " + this.originalPos + "<br>"+
-		"Final position: " + this.finalPos + "<br>"+
-		"Number of stops: " + this.numberOfStops + "<br>"+
-		"Number of movements: " + this.totalMovement + "<br>"+
-		"Total time passed: " + Math.round(this.calculateTimePassed(5, timer/1000)) + "<br>"+
-		"||||||||||||||||||||||||||||||||" + "<br><br>";
-		
+			"Original position: " + this.originalPos + "<br>" +
+			"Final position: " + this.finalPos + "<br>" +
+			"Number of stops: " + this.numberOfStops + "<br>" +
+			"Number of movements: " + this.totalMovement + "<br>" +
+			"Total time passed: " + Math.round(this.calculateTimePassed(5, timer / 1000)) + "<br>" +
+			"||||||||||||||||||||||||||||||||" + "<br><br>";
+
 	};
 	return this;
 }
