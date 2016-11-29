@@ -1,5 +1,5 @@
 /*jshint esversion: 6*/
-/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx */
+/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx, size */
 
 var direction = {
 	UP: 1,
@@ -7,7 +7,7 @@ var direction = {
 	NONE: 0
 };
 
-function Elevator(capacity, number, elevatorSize, coord) {
+function Elevator(capacity, number, coord) {
 	//'use strict';
 	this.number = number;
 	this.capacity = capacity;
@@ -17,7 +17,7 @@ function Elevator(capacity, number, elevatorSize, coord) {
 	this.direction = direction.NONE;
 	this.people = [];
 	this.stats = undefined;
-	this.elevatorSize = elevatorSize;
+	this.elevatorSize = new size(76, 95);
 	this.coord = coord;
 	let isMoving = false;
 	let previousFloor;
@@ -100,10 +100,12 @@ function Elevator(capacity, number, elevatorSize, coord) {
 				default:
 					break;
 			}
-			//this.stats.incrementMovement(); //TODO: Mudar de lugar
+			this.stats.incrementMovement(); //TODO: Mudar de lugar
 		} else
 			this.direction = direction.NONE;
 	}
+
+
 	this.move = function () {
 		//console.log(" Elevator " + this.number + ": current floor - " + this.currentFloor + " people - " + this.people.length);
 		this.draw(previousFloor);
@@ -124,19 +126,22 @@ function Elevator(capacity, number, elevatorSize, coord) {
 			moveNextFloor.call(this);
 			setTimeout(this.move.bind(this), timer);
 		} else {
-			isMoving = false;
-			let infoElevator = document.getElementById("infoElevator");
-			//this.stats.finalPos = this.currentFloor;
-			//this.stats.displayResults(infoElevator);
+			this.stopMoving.call(this);
 		}
 		this.draw(previousFloor);
 	};
-
 	this.startMoving = function () {
 		if (!isMoving) {
-			this.move();
 			initStatistics.call(this);
+			this.move();
+
 		}
+
+	};
+	this.stopMoving = function () {
+		isMoving = false;
+		this.stats.endTime = new Date();
+		this.stats.finalPos = this.currentFloor;
 
 	};
 
@@ -175,9 +180,9 @@ function Elevator(capacity, number, elevatorSize, coord) {
 	this.reloadPeople = function () {
 		let peopleLeft = removePeople.call(this);
 		let peopleEntered = getPeople.call(this);
-		//this.stats.incrementMovement(); //TODO:
-		/*if (peopleEntered || peopleLeft)
-			this.stats.incrementNumOfStops();*/
+		//this.stats.incrementMovement();
+		if (peopleEntered || peopleLeft)
+			this.stats.incrementNumOfStops();
 	};
 
 	function removePeople() {
@@ -195,7 +200,7 @@ function Elevator(capacity, number, elevatorSize, coord) {
 				this.people.splice(i, 1);
 				i--;
 				person.stats.incrementNumOfStops();
-				//person.displayInfo();
+				person.stats.endTime = new Date();
 				peopleLeft = true;
 			}
 
@@ -253,9 +258,12 @@ function Elevator(capacity, number, elevatorSize, coord) {
 	this.draw = function (previusFloor = 0) {
 		ctx.save();
 		ctx.beginPath();
-		ctx.clearRect(132 + (100 * this.number), 12 + (100 * (Building.floors.length - 1 - previusFloor)), 76, 95);
+		if (previusFloor > this.currentFloor)
+			ctx.clearRect(this.coord.x, this.coord.y - 100, this.elevatorSize.width, this.elevatorSize.height);
+		else
+			ctx.clearRect(this.coord.x, this.coord.y + 100, this.elevatorSize.width, this.elevatorSize.height);
 		ctx.fillStyle = "blue";
-		ctx.fillRect(132 + (100 * this.number), 12 + (100 * (Building.floors.length - 1 - this.currentFloor)), 76, 95);
+		ctx.fillRect(this.coord.x, this.coord.y, this.elevatorSize.width, this.elevatorSize.height);
 		drawPersonInTheElevator.call(this);
 		ctx.restore();
 	};
@@ -275,4 +283,14 @@ function Elevator(capacity, number, elevatorSize, coord) {
 		}
 	}
 
+
+	this.isWithinElevatorArea = function (x, y) {
+		return (x >= this.coord.x && x <= this.coord.x + this.elevatorSize.width) && (y >= this.coord.y && y <= this.coord.y + this.elevatorSize.height);
+	};
+	this.displayInfo = function () {
+		if (this.stats !== undefined) {
+			let infoElevator = document.getElementById("infoElevator");
+			infoElevator.innerHTML = "<b>Elevator: " + this.number + "</b><br>" + this.stats.displayResults(infoElevator);
+		}
+	};
 }

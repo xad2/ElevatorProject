@@ -32,6 +32,7 @@ function addEventListeners() {
 	canvas.addEventListener("click", function (event) {
 
 			let floors = Building.floors;
+			
 			for (let i = 0; i < floors.length; i++) {
 				if (floors[i].isWithinFloorButton(event.offsetX, event.offsetY)) {
 					event.preventDefault();
@@ -47,15 +48,21 @@ function addEventListeners() {
 						destFloor = randomValue(floors.length - 1);
 					} while (currentFloor === destFloor);
 					addPerson(currentFloor, destFloor);
-
 					break;
 				} else if (floors[i].isWithinRemovePersonButton(event.offsetX, event.offsetY)) {
 					event.preventDefault();
 					event.stopPropagation();
 					removePerson(floors[i].number, randomValue(floors.length - 1));
-					//floors[i].removePerson();
 					break;
-
+				}
+			}
+			let elevators = Building.elevators;
+			for(let i = 0; i< elevators.length;i++){
+				if (elevators[i].isWithinElevatorArea(event.offsetX, event.offsetY)) {
+					event.preventDefault();
+					event.stopPropagation();
+					elevators[i].displayInfo();
+					break;
 				}
 			}
 
@@ -65,7 +72,7 @@ function addEventListeners() {
 
 }
 
-function displayFloorInfo() {
+function displayFloorInfo_() {
 	let floorInfo = document.getElementById("floorInfo");
 	let value = floorInfo.value;
 	let output = document.getElementById("infoPerson");
@@ -120,13 +127,6 @@ function addRandomPerson() {
 	addPerson(currentFloor, destinationFloor);
 }
 
-function addPersonFromHTML() {
-	let currentFloor = document.getElementById("currentFloor").value;
-	let destinationFloor = document.getElementById("floorOut").value;
-	addPerson(currentFloor, destinationFloor);
-}
-
-
 function removePerson(currentFloor, destinationFloor) {
 	if (!isNaN(currentFloor) && currentFloor !== "" && !isNaN(destinationFloor) && destinationFloor !== "") {
 
@@ -151,25 +151,15 @@ function removePerson(currentFloor, destinationFloor) {
 	}
 }
 
-function removePersonFromHTML() {
-	let currentFloor = document.getElementById("currentFloor").value;
-	let destinationFloor = document.getElementById("floorOut").value;
-	removePerson(currentFloor, destinationFloor);
-}
-
 
 
 function setup() {
-	Building = new building(8, 3, 5);
+	let floorsHTML = Number(document.getElementById("floors").value);
+	let ElevatorsHTML = Number(document.getElementById("Elevators").value);
+	let CapacityHTML = Number(document.getElementById("Capacity").value);
+	Building = new building(floorsHTML, ElevatorsHTML, CapacityHTML);
 	Building.drawBuilding();
 	addEventListeners();
 	populateInfoArray();
 
 }
-
-setup();
-
-function test() {
-
-}
-//test();

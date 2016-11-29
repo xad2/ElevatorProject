@@ -29,27 +29,34 @@ function floor(number, size, coord) {
 	};
 	*/
 
+	this.isWithin = function (x, y, diff = 0) {
+		let startX = this.buttonCoordinate.x - (this.buttonSize.width / 2) - diff;
+		let startY = this.buttonCoordinate.y - (this.buttonSize.height / 2) - 6;
+		return (x >= startX && x <= startX + this.buttonSize.width) && (y >= startY && y <= startY + this.buttonSize.height);
+	};
 	this.isWithinFloorButton = function (x, y) {
-		let butX = this.buttonCoordinate.x - this.buttonSize.width;
-		return (x >= butX && x <= butX + this.buttonSize.width) && (y >= this.buttonCoordinate.y - this.buttonSize.height && y <= this.buttonCoordinate.y + this.buttonSize.height);
+		return this.isWithin(x, y);
 	};
 	this.isWithinAddPersonButton = function (x, y) {
-		let butX = this.buttonCoordinate.x - this.buttonSize.width - 50;
-		return (x >= butX && x <= butX + this.buttonSize.width) && (y >= this.buttonCoordinate.y - this.buttonSize.height && y <= this.buttonCoordinate.y + this.buttonSize.height);
+		return this.isWithin(x, y, 75);
 	};
 	this.isWithinRemovePersonButton = function (x, y) {
-		let butX = this.buttonCoordinate.x - this.buttonSize.width - 30;
-		return (x >= butX && x <= butX + this.buttonSize.width) && (y >= this.buttonCoordinate.y - this.buttonSize.height && y <= this.buttonCoordinate.y + this.buttonSize.height);
+		return this.isWithin(x, y, 42);
 	};
 
 
 	this.drawButton = function () {
 		//canvas.addEventListener("mouseover", this.mouseOver, false);
+
 		let x = this.buttonCoordinate.x;
 		let y = this.buttonCoordinate.y;
+		ctx.save();
+		ctx.beginPath();
+		ctx.textAlign = "center";
 		ctx.fillText(number, x, y);
-		ctx.moveTo(x + 5, y - 10);
-		ctx.arc(x - 5, y - 6, 10, 0, Math.PI * 2);
+		ctx.arc(x, y - 6, 12, 0, Math.PI * 2);
+		ctx.stroke();
+		ctx.restore();
 	};
 
 	this.displayInfo = function () {
@@ -58,7 +65,7 @@ function floor(number, size, coord) {
 			return "<p>There's no one on this floor!</p>";
 
 		output += "<p> <b>Displaying information of people at floor number " + this.number + " </b></p>";
-		output += "||||||||||||||||||||||||||||||||" + "<br>";
+		//output += "||||||||||||||||||||||||||||||||" + "<br>";
 		for (let i = 0; i < this.people.length; i++) {
 			output += "<img src=\"\"></img><br>" + this.people[i].displayInfo();
 		}
@@ -79,6 +86,19 @@ function floor(number, size, coord) {
 		let x = this.coord.x + this.size.width + 2;
 		let y = this.coord.y + 5;
 		for (let i = 0; i < this.people.length; i++) {
+			if (i % 5 === 0 && i !== 0) {
+				y += this.people[i].size.height; // start at the top
+				x = this.coord.x + this.size.width + 2;
+			}
+			this.people[i].coord = new coordinates(x, y);
+			this.people[i].draw();
+			x += this.people[i].size.width - 5;
+		}
+	};
+
+	return this;
+}
+i++) {
 			if (i % 5 === 0 && i !== 0) {
 				y += this.people[i].size.height; // start at the top
 				x = this.coord.x + this.size.width + 2;

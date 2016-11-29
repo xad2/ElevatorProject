@@ -95,7 +95,7 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 	this.drawFloorButtons = function () {
 		ctx.font = "18px Arial";
 		ctx.textAlign = "end";
-		let x = 120;
+		let x = 115;
 		let y = buildingBottom();
 		for (let i = 0; i < this.floors.length; i++) {
 			this.floors[i].buttonCoordinate = coordinates(x, y);
@@ -104,16 +104,18 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 			this.drawAddRemovePersonButton(x, y);
 			y -= 100;
 		}
-		ctx.stroke();
+		
 
 
 	};
 	this.drawAddRemovePersonButton = function (x, y) {
 		ctx.save();
+		ctx.beginPath();
 		ctx.fillStyle = "green";
 		ctx.fillText("+", x - 70, y);
 		ctx.fillStyle = "red";
 		ctx.fillText("-", x - 40, y);
+		ctx.stroke();
 		ctx.restore();
 	};
 
@@ -126,11 +128,15 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 
 		}
 		for (let i = 0; i < amountOfElevators; i++)
-			this.elevators.push(new Elevator(elevatorCapacity, i, floorSize - 4, coordinates((120 + (100 * i) + 1), firstFloorY() + 12)));
+			this.elevators.push(new Elevator(elevatorCapacity, i,  coordinates((132 + (100 * i)), firstFloorY()+2)));
 		
 	}
 
 	buildingConstructor.call(this, amountOfFloors, amountOfElevators, elevatorCapacity);
+
+
+}
+orCapacity);
 
 
 }

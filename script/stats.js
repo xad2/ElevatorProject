@@ -6,6 +6,8 @@ function Statistics() {
 	this.finalPos = 0;
 	this.numberOfStops = 0;
 	this.totalMovement = 0;
+	this.startTime = new Date();
+	this.endTime = undefined;
 
 	this.initStatistics = function (originalPos, finalPos) {
 		this.originalPos = originalPos;
@@ -25,7 +27,13 @@ function Statistics() {
 	this.calculateTimePassed = function (stopTime, intervalTime) {
 		return (stopTime * this.numberOfStops) + (this.totalMovement * intervalTime);
 	};
-
+	this.returnDifferenceBetweenTime = function () {
+		if (this.endTime !== undefined) {
+			var d = new Date(this.endTime - this.startTime);
+			return "Time: " + ("0" + d.getUTCMinutes()).slice(-2) + ":" + ("0" + d.getUTCSeconds()).slice(-2) + "<br>";
+		}
+		return "";
+	};
 	this.displayResults = function () {
 		return "<br>" +
 			"Original position: " + this.originalPos + "<br>" +
@@ -33,6 +41,7 @@ function Statistics() {
 			"Number of stops: " + this.numberOfStops + "<br>" +
 			"Number of movements: " + this.totalMovement + "<br>" +
 			"Total time passed: " + Math.round(this.calculateTimePassed(5, timer / 1000)) + "<br>" +
+			this.returnDifferenceBetweenTime() +
 			"||||||||||||||||||||||||||||||||" + "<br><br>";
 
 	};
