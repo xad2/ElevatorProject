@@ -1,6 +1,7 @@
 canvas {
 	border: 1px solid #000000;
-	/*background-image: url("../images/Landscape.jpg");*/
+	background-image: url("../images/floor.jpg");
+	background-size: 100% 100px;
 	overflow: auto;
 }
 #div-info {

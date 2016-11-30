@@ -64,8 +64,8 @@ let populateInfoArray = function () {
 		namePicIndex = i;
 		randomCommentIndex = randomValue(commentsArray.length - 1);
 
-		let object = InfoConstructor(namesArray[namePicIndex],
+		let infoObject  = InfoConstructor(namesArray[namePicIndex],
 			commentsArray[randomCommentIndex], picturesArray[namePicIndex]);
-		infoArray.push(object);
+		infoArray.push(infoObject);
 	}
 };

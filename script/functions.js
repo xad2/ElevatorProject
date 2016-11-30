@@ -4,10 +4,17 @@ let randomValue = function (max) {
 	return Math.round(Math.random() * max);
 };
 
-let isFloorValid = function (floorNum) {
+let isValid = function (num, from, to) {
+	return num >= from && num <= to;
+};
 
-    return floorNum >= 0 && floorNum <= Building.floors.length-1;
 
+let isFloorValid = function (floorQuantity) {
+	return isValid(floorQuantity, 1, 50);
+};
+
+let isElevatorValid = function (elevatorQuantity) {
+	return isValid(elevatorQuantity, 1, 15);
 };
 
 function loadFile() {
@@ -20,5 +27,5 @@ function loadFile() {
 		addPersonFromFile(output);
 	};
 	reader.readAsText(scene.files[0]);
-	
+
 }
