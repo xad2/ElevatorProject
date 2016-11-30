@@ -47,6 +47,8 @@ function Elevator(capacity, number, coord) {
 	};
 
 	this.acceptCall = function (calledFloor) {
+		if (this.people.length >= this.capacity)
+			return false;
 		if (!hasDestination.call(this)) {
 			addDestination.call(this, calledFloor.floor);
 			this.calledFloor.push(calledFloor);

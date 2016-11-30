@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Elevator Simulator</title>
+	<meta charset="utf-8" />
+
+	<link href="style/style.css" rel="stylesheet" type="text/css" />
+
+	<script src="script/functions.js" defer></script>
+	<script src="script/info.js" defer></script>
+	<script src="script/elevator.js" defer></script>
+	<script src="script/floors.js" defer></script>
+	<script src="script/calls.js" defer></script>
+	<script src="script/building.js" defer></script>
+	<script src="script/person.js" defer></script>
+	<script src="script/stats.js" defer></script>
+	<script src="script/system.js" defer></script>
+
+</head>
+
+<body>
+	<h2>
+		Alexandre
+		<br>
+		Ludwig Nunes de Vasconcelos (100285296)
+		<br>
+		<br>
+		Final Project - Elevator Simulator - <a href="instructions.html">Instructions</a>
+	</h2>
+	<main>
+		<div class="div-top">
+			Number of floors:
+			<input type="number" name="floors" id="floors" min="1" max="50" value="10"> Number of Elevators:
+			<input type="number" id="Elevators" min="1" max="15" value="2"> Capacity for the Elevators:
+			<input type="number" id="Capacity" min="1" max="15" value="10"> |
+			<input type="button" onclick="setup()" value="Create Building">
+			<br>
+
+			<input type="button" onclick="addRandomPerson()" value="add person to random floors"> Or
+			<input type="file" id="fileinput" /> and
+			<input type="button" onclick="loadFile()" value="Load scenario">
+			<br>
+			<br>
+		</div>
+
+		<div id="div-canvas">
+			<canvas id="canvas" width="0" height="0"></canvas>
+			<br>
+		</div>
+
+		<div id="div-info">
+			<div id="infoPerson"> </div>
+			<div id="infoElevator"> </div>
+			<br>
+		</div>
+	</main>
+</body>
+
+</html>

@@ -111,9 +111,9 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 		ctx.save();
 		ctx.beginPath();
 		ctx.fillStyle = "white";
-		ctx.arc(x-75, y, 12, 0, Math.PI * 2);
-		ctx.arc(x-43, y, 12, 0, Math.PI * 2);
-		ctx.fill();	
+		ctx.arc(x - 75, y, 12, 0, Math.PI * 2);
+		ctx.arc(x - 43, y, 12, 0, Math.PI * 2);
+		ctx.fill();
 		ctx.beginPath();
 		ctx.fillStyle = "green";
 		ctx.fillText("+", x - 70, y + 6);
