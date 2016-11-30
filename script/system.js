@@ -164,13 +164,11 @@ function setup() {
 	let floorsInput = Number(document.getElementById("floors").value);
 	let elevatorsInput = Number(document.getElementById("Elevators").value);
 	let capacityInput = Number(document.getElementById("Capacity").value);
-	if (isElevatorValid(elevatorsInput) && capacityInput > 0 && isFloorValid(floorsInput)) {
-		Building = new building(floorsInput, elevatorsInput, capacityInput);
-		Building.drawBuilding();
-		addEventListeners();
-		populateInfoArray();
-	} else
-		alert("Invalid settings! Please see manual if you're unsure why.");
-
-
+	if(isElevatorValid(elevatorsInput) && capacityInput > 0 && isFloorValid(floorsInput) ){
+	    Building = new building(floorsInput, elevatorsInput, capacityInput);
+	    Building.drawBuilding();
+	    addEventListeners();
+	    populateInfoArray();
+    }else
+        alert("Invalid settings! Please see manual if you're unsure why.");
 }

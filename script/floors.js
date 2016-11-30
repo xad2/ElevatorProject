@@ -19,7 +19,6 @@ function floor(number, size, coord) {
 	};
 	this.removePerson = function (personIndex) {
 		this.clearPeopleInThisFloor();
-		//this.people[personIndex].clear();
 		this.people.splice(personIndex, 1);
 		this.drawPeopleInThisFloor();
 	};

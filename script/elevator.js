@@ -1,5 +1,5 @@
 /*jshint esversion: 6*/
-/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx, size */
+/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx, size , DoorImage, ElevatorImage*/
 
 var direction = {
 	UP: 1,
