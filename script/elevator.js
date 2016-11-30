@@ -1,5 +1,5 @@
 /*jshint esversion: 6*/
-/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx, size */
+/*globals document, floors, drawPersonInTheElevator, Statistics, console, setTimeout, Building, timer, floorCall, ctx, size , DoorImage, ElevatorImage*/
 
 var direction = {
 	UP: 1,
@@ -100,20 +100,18 @@ function Elevator(capacity, number, coord) {
 				default:
 					break;
 			}
-			this.stats.incrementMovement(); //TODO: Mudar de lugar
+			this.stats.incrementMovement();
 		} else
 			this.direction = direction.NONE;
 	}
 
 
 	this.move = function () {
-		//console.log(" Elevator " + this.number + ": current floor - " + this.currentFloor + " people - " + this.people.length);
 		this.draw(previousFloor);
 		updateDirection.call(this);
 		if (hasDestination.call(this)) {
 			isMoving = true;
 			previousFloor = this.currentFloor;
-			//TODO: create a new function
 			for (let i = 0; i < this.destinationFloors.length; i++) {
 				if (this.currentFloor === this.destinationFloors[i].number) {
 					this.destinationFloors.splice(i, 1);
@@ -121,7 +119,6 @@ function Elevator(capacity, number, coord) {
 					this.reloadPeople();
 					break;
 				}
-
 			}
 			moveNextFloor.call(this);
 			setTimeout(this.move.bind(this), timer);
@@ -146,7 +143,7 @@ function Elevator(capacity, number, coord) {
 	};
 
 
-	function updateDirection() { //TODO:Melhorar Algoritmo
+	function updateDirection() {
 		let up = false;
 		let down = false;
 		for (let i = 0; i < this.destinationFloors.length; i++) {
@@ -180,7 +177,6 @@ function Elevator(capacity, number, coord) {
 	this.reloadPeople = function () {
 		let peopleLeft = removePeople.call(this);
 		let peopleEntered = getPeople.call(this);
-		//this.stats.incrementMovement();
 		if (peopleEntered || peopleLeft)
 			this.stats.incrementNumOfStops();
 	};
@@ -259,17 +255,16 @@ function Elevator(capacity, number, coord) {
 		ctx.save();
 		ctx.beginPath();
 		if (previusFloor > this.currentFloor)
-			ctx.clearRect(this.coord.x, this.coord.y - 100, this.elevatorSize.width, this.elevatorSize.height);
+			ctx.drawImage(DoorImage, this.coord.x, this.coord.y - 100, this.elevatorSize.width, this.elevatorSize.height);
 		else
-			ctx.clearRect(this.coord.x, this.coord.y + 100, this.elevatorSize.width, this.elevatorSize.height);
-		ctx.fillStyle = "blue";
-		ctx.fillRect(this.coord.x, this.coord.y, this.elevatorSize.width, this.elevatorSize.height);
+			ctx.drawImage(DoorImage, this.coord.x, this.coord.y + 100, this.elevatorSize.width, this.elevatorSize.height);
+		ctx.drawImage(ElevatorImage, this.coord.x, this.coord.y, this.elevatorSize.width, this.elevatorSize.height);
 		drawPersonInTheElevator.call(this);
 		ctx.restore();
 	};
 
 	function drawPersonInTheElevator() {
-		let x = this.coord.x ;
+		let x = this.coord.x;
 		let y = this.coord.y + 5;
 		for (let i = 0; i < this.people.length; i++) {
 			if (i % 5 === 0 && i !== 0) {
@@ -278,8 +273,7 @@ function Elevator(capacity, number, coord) {
 			}
 			this.people[i].coord.x = x;
 			this.people[i].coord.y = y;
-			if (i < 10) // limit the people(drawings) on the elevator
-                this.people[i].draw();
+			this.people[i].draw();
 			x += this.people[i].size.width - 5;
 		}
 	}

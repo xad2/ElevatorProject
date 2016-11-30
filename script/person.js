@@ -24,7 +24,6 @@ function person(info, currentFloor, destinationFloor) {
 		this.stats.initStatistics(this.currentFloor, this.destinationFloor);
 	};
 
-	//TODO: fazer metodo para display info (incluindo statistics.)
 	this.displayInfo = function () {
 		let output = "";
 		output += "Name: " + this.info.name + "<br>";
@@ -47,6 +46,5 @@ function person(info, currentFloor, destinationFloor) {
 
 	this.clear = function () {
 		ctx.clearRect(this.coord.x, this.coord.y, this.size.width, this.size.height);
-		ctx.stroke();
 	};
 }

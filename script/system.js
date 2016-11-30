@@ -9,6 +9,13 @@ const ctx = canvas.getContext("2d");
 var HomerImage = new Image();
 HomerImage.src = "images/Homer.png";
 
+var ElevatorImage = new Image();
+ElevatorImage.src = "images/Elevator.jpg";
+
+var DoorImage = new Image();
+DoorImage.src = "images/door.jpg";
+
+
 var coordinates = function (x, y) {
 	return {
 		x: x,
@@ -32,7 +39,7 @@ function addEventListeners() {
 	canvas.addEventListener("click", function (event) {
 
 			let floors = Building.floors;
-			
+
 			for (let i = 0; i < floors.length; i++) {
 				if (floors[i].isWithinFloorButton(event.offsetX, event.offsetY)) {
 					event.preventDefault();
@@ -57,7 +64,7 @@ function addEventListeners() {
 				}
 			}
 			let elevators = Building.elevators;
-			for(let i = 0; i< elevators.length;i++){
+			for (let i = 0; i < elevators.length; i++) {
 				if (elevators[i].isWithinElevatorArea(event.offsetX, event.offsetY)) {
 					event.preventDefault();
 					event.stopPropagation();
@@ -81,8 +88,8 @@ function displayFloorInfo_() {
 }
 
 function setCanvasMeasurements(floorsAmount, elevatorsAmount) {
-	canvas.height = (floorsAmount * 100) + 10;
-	canvas.width += 100 * elevatorsAmount; //width for 1 elev: 100
+	canvas.height = (floorsAmount * 100);
+	canvas.width = 320 + (100 * elevatorsAmount); //width for 1 elev: 100
 }
 
 
