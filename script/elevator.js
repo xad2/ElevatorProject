@@ -269,16 +269,17 @@ function Elevator(capacity, number, coord) {
 	};
 
 	function drawPersonInTheElevator() {
-		let x = this.coord.x + 10;
+		let x = this.coord.x ;
 		let y = this.coord.y + 5;
 		for (let i = 0; i < this.people.length; i++) {
 			if (i % 5 === 0 && i !== 0) {
 				y += this.people[i].size.height; // start at the top
-				x = this.coord.x + 10;
+				x = this.coord.x;
 			}
 			this.people[i].coord.x = x;
 			this.people[i].coord.y = y;
-			this.people[i].draw();
+			if (i < 10) // limit the people(drawings) on the elevator
+                this.people[i].draw();
 			x += this.people[i].size.width - 5;
 		}
 	}

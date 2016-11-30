@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 /*globals document, randomValue, isFloorValid, infoArray, usedNamesArray, building, person, Statistics, populateInfoArray,
-floorCall, Image
+floorCall, Image, isElevatorValid, isValid
 */
 const timer = 800;
 const canvas = document.getElementById("canvas");
@@ -154,12 +154,14 @@ function removePerson(currentFloor, destinationFloor) {
 
 
 function setup() {
-	let floorsHTML = Number(document.getElementById("floors").value);
-	let ElevatorsHTML = Number(document.getElementById("Elevators").value);
-	let CapacityHTML = Number(document.getElementById("Capacity").value);
-	Building = new building(floorsHTML, ElevatorsHTML, CapacityHTML);
-	Building.drawBuilding();
-	addEventListeners();
-	populateInfoArray();
-
+	let floorsInput = Number(document.getElementById("floors").value);
+	let elevatorsInput = Number(document.getElementById("Elevators").value);
+	let capacityInput = Number(document.getElementById("Capacity").value);
+	if(isElevatorValid(elevatorsInput) && capacityInput > 0 && isFloorValid(floorsInput) ){
+	    Building = new building(floorsInput, elevatorsInput, capacityInput);
+	    Building.drawBuilding();
+	    addEventListeners();
+	    populateInfoArray();
+    }else
+        alert("Invalid settings! Please see manual if you're unsure why.");
 }

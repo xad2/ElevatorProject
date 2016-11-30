@@ -4,11 +4,23 @@ let randomValue = function (max) {
 	return Math.round(Math.random() * max);
 };
 
-let isFloorValid = function (floorNum) {
+let isValid = function (num, from, to) {
 
-    return floorNum >= 0 && floorNum <= Building.floors.length-1;
+    return num >= from && num <= to;
 
 };
+
+let isFloorValid = function (floorQuantity) {
+
+    return isValid(floorQuantity, 1, 50);
+
+};
+let isElevatorValid = function (elevatorQuantity) {
+
+    return isValid(elevatorQuantity, 1, 15);
+
+};
+
 
 function loadFile() {
 	let scene = document.getElementById('fileinput');

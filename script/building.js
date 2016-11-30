@@ -136,7 +136,3 @@ function building(amountOfFloors, amountOfElevators, elevatorCapacity) {
 
 
 }
-orCapacity);
-
-
-}
